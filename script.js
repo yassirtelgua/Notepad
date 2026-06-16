@@ -1,5 +1,5 @@
 let notes = JSON.parse(localStorage.getItem("notes")) || [];
-let current = null;
+let current = localStorage.getItem("currentNote");
 
 const list = document.getElementById("notesList");
 const title = document.getElementById("title");
@@ -8,38 +8,41 @@ const wordCount = document.getElementById("wordCount");
 const saveStatus = document.getElementById("saveStatus");
 const search = document.getElementById("search");
 
-// LOAD NOTES
+// RENDER NOTES
 function renderNotes(filter = "") {
   list.innerHTML = "";
 
   notes
-    .filter(n => n.title.toLowerCase().includes(filter.toLowerCase()))
+    .filter(n => (n.title || "").toLowerCase().includes(filter.toLowerCase()))
     .forEach((note, index) => {
       const li = document.createElement("li");
       li.textContent = note.title || "Untitled";
-      if (index === current) li.classList.add("active");
+
+      if (index == current) li.classList.add("active");
 
       li.onclick = () => loadNote(index);
       list.appendChild(li);
     });
 }
 
-// CREATE NEW NOTE
+// CREATE NOTE
 function createNote() {
   notes.push({ title: "", content: "" });
   current = notes.length - 1;
   saveNotes();
-  renderNotes();
   loadNote(current);
 }
 
 // LOAD NOTE
 function loadNote(index) {
   current = index;
-  title.value = notes[index].title;
-  textarea.value = notes[index].content;
+  localStorage.setItem("currentNote", current);
+
+  title.value = notes[index].title || "";
+  textarea.value = notes[index].content || "";
+
   updateWordCount();
-  renderNotes();
+  renderNotes(search.value);
 }
 
 // SAVE NOTES
@@ -48,9 +51,6 @@ function saveNotes() {
 }
 
 // AUTO SAVE
-title.addEventListener("input", saveCurrentNote);
-textarea.addEventListener("input", saveCurrentNote);
-
 function saveCurrentNote() {
   if (current === null) return;
 
@@ -66,6 +66,28 @@ function saveCurrentNote() {
 
   updateWordCount();
   renderNotes(search.value);
+}
+
+title.addEventListener("input", saveCurrentNote);
+textarea.addEventListener("input", saveCurrentNote);
+
+// DELETE NOTE
+function deleteNote() {
+  if (current === null) return;
+
+  notes.splice(current, 1);
+
+  if (notes.length === 0) {
+    current = null;
+    title.value = "";
+    textarea.value = "";
+  } else {
+    current = 0;
+    loadNote(current);
+  }
+
+  saveNotes();
+  renderNotes();
 }
 
 // WORD COUNT
@@ -85,12 +107,46 @@ function toggleTheme() {
   localStorage.setItem("theme", document.body.classList.contains("light"));
 }
 
-// LOAD THEME
+// EXPORT NOTES
+function exportNotes() {
+  const blob = new Blob([JSON.stringify(notes, null, 2)], {
+    type: "application/json"
+  });
+
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+
+  a.href = url;
+  a.download = "notes.json";
+  a.click();
+
+  URL.revokeObjectURL(url);
+}
+
+// KEYBOARD SHORTCUTS
+document.addEventListener("keydown", (e) => {
+  if (e.ctrlKey && e.key === "s") {
+    e.preventDefault();
+    saveCurrentNote();
+  }
+
+  if (e.ctrlKey && e.key === "n") {
+    e.preventDefault();
+    createNote();
+  }
+});
+
+// INIT
 window.onload = () => {
+  // Load theme
   const theme = localStorage.getItem("theme");
   if (theme === "true") {
     document.body.classList.add("light");
   }
 
   renderNotes();
+
+  if (current !== null && notes[current]) {
+    loadNote(current);
+  }
 };
