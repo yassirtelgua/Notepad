@@ -10,7 +10,6 @@ const saveStatus = document.getElementById("saveStatus");
 const search = document.getElementById("search");
 const fontSelector = document.getElementById("fontSelector");
 
-// RENDER
 function renderNotes(filter = "") {
   list.innerHTML = "";
 
@@ -27,7 +26,6 @@ function renderNotes(filter = "") {
     });
 }
 
-// CREATE
 function createNote() {
   notes.push({ title: "", content: "", font: "Inter" });
   current = notes.length - 1;
@@ -35,7 +33,6 @@ function createNote() {
   loadNote(current);
 }
 
-// LOAD
 function loadNote(index) {
   current = index;
   localStorage.setItem("currentNote", current);
@@ -47,22 +44,19 @@ function loadNote(index) {
   textarea.style.fontFamily = font;
   fontSelector.value = font;
 
-  // ✅ Smooth animation
   textarea.style.opacity = 0;
   setTimeout(() => {
     textarea.style.opacity = 1;
-  }, 120);
+  }, 100);
 
   updateWordCount();
   renderNotes(search.value);
 }
 
-// SAVE
 function saveNotes() {
   localStorage.setItem("notes", JSON.stringify(notes));
 }
 
-// AUTO SAVE
 function saveCurrentNote() {
   if (current === null) return;
 
@@ -84,28 +78,18 @@ function saveCurrentNote() {
 title.addEventListener("input", saveCurrentNote);
 textarea.addEventListener("input", saveCurrentNote);
 
-// DELETE + UNDO
 function deleteNote() {
   if (current === null) return;
 
   deletedNote = notes[current];
   notes.splice(current, 1);
 
-  if (notes.length === 0) {
-    current = null;
-    title.value = "";
-    textarea.value = "";
-  } else {
-    current = 0;
-    loadNote(current);
-  }
-
+  current = 0;
   saveNotes();
   renderNotes();
   showUndo();
 }
 
-// UNDO
 function undoDelete() {
   if (!deletedNote) return;
 
@@ -116,11 +100,10 @@ function undoDelete() {
   renderNotes();
 }
 
-// POPUP
 function showUndo() {
   const undo = document.createElement("div");
   undo.className = "undo-popup";
-  undo.textContent = "Note deleted ❌ — Click to undo";
+  undo.textContent = "Note deleted — click to undo";
 
   undo.onclick = () => {
     undoDelete();
@@ -136,26 +119,19 @@ function showUndo() {
   }, 5000);
 }
 
-// WORD COUNT
 function updateWordCount() {
-  const words = textarea.value.trim().split(/\s+/).filter(w => w.length > 0);
+  const words = textarea.value.trim().split(/\s+/).filter(w => w);
   wordCount.textContent = words.length + " words";
 }
 
-// SEARCH
-search.addEventListener("input", () => {
-  renderNotes(search.value);
-});
+search.addEventListener("input", () => renderNotes(search.value));
 
-// THEME
 function toggleTheme() {
   document.body.classList.toggle("light");
-  localStorage.setItem("theme", document.body.classList.contains("light"));
 }
 
-// EXPORT
 function exportNotes() {
-  const blob = new Blob([JSON.stringify(notes, null, 2)], { type: "application/json" });
+  const blob = new Blob([JSON.stringify(notes)], { type: "application/json" });
   const a = document.createElement("a");
 
   a.href = URL.createObjectURL(blob);
@@ -163,7 +139,6 @@ function exportNotes() {
   a.click();
 }
 
-// FONT
 function changeNoteFont() {
   const font = fontSelector.value;
   textarea.style.fontFamily = font;
@@ -174,16 +149,12 @@ function changeNoteFont() {
   }
 }
 
-// INIT
 window.onload = () => {
-  const theme = localStorage.getItem("theme");
-  if (theme === "true") document.body.classList.add("light");
-
   renderNotes();
 
   if (notes.length === 0) {
     createNote();
-  } else if (current !== null) {
-    loadNote(current);
+  } else {
+    loadNote(current || 0);
   }
 };
