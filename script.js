@@ -1,8 +1,8 @@
 body {
   margin: 0;
   font-family: Arial, sans-serif;
-  background: #0d1117;
-  color: #e6edf3;
+  background: #111;
+  color: white;
 }
 
 .container {
@@ -12,15 +12,7 @@ body {
 }
 
 h1 {
-  margin-bottom: 10px;
-}
-
-.status {
-  display: flex;
-  justify-content: space-between;
-  font-size: 14px;
-  margin-bottom: 10px;
-  color: #8b949e;
+  margin-bottom: 20px;
 }
 
 textarea {
@@ -32,24 +24,14 @@ textarea {
   border: none;
   outline: none;
   resize: none;
-  background: #161b22;
-  color: white;
-}
-
-.buttons {
-  margin-top: 15px;
 }
 
 button {
-  margin: 5px;
+  margin-top: 15px;
   padding: 10px 20px;
   border: none;
-  background: #238636;
+  background: red;
   color: white;
   border-radius: 8px;
   cursor: pointer;
-}
-
-button:last-child {
-  background: #da3633;
 }
