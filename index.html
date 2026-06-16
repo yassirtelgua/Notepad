@@ -21,7 +21,6 @@
 
       <div class="actions">
         <button onclick="toggleTheme()">🌙/☀️</button>
-        <button onclick="changeFont()">🔤</button>
         <button onclick="exportNotes()">📁</button>
       </div>
     </div>
@@ -37,6 +36,14 @@
       <!-- Editor -->
       <div class="editor">
         <input id="title" placeholder="Note title...">
+
+        <!-- ✅ FONT SELECTOR -->
+        <select id="fontSelector" onchange="changeNoteFont()">
+          <option value="Inter">Inter</option>
+          <option value="Roboto">Roboto</option>
+          <option value="Playfair Display">Playfair</option>
+        </select>
+
         <textarea id="note" placeholder="Start typing..."></textarea>
 
         <div class="bottom">
@@ -44,13 +51,3 @@
           <span id="wordCount">0 words</span>
           <button onclick="deleteNote()">🗑️</button>
         </div>
-      </div>
-
-    </div>
-  </div>
-
-  <!-- ✅ JS -->
-  <script src="script.js"></script>
-
-</body>
-</html>
