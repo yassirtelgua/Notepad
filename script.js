@@ -8,6 +8,7 @@ const textarea = document.getElementById("note");
 const wordCount = document.getElementById("wordCount");
 const saveStatus = document.getElementById("saveStatus");
 const search = document.getElementById("search");
+const fontSelector = document.getElementById("fontSelector");
 
 // RENDER
 function renderNotes(filter = "") {
@@ -18,9 +19,7 @@ function renderNotes(filter = "") {
     .forEach((note, index) => {
       const li = document.createElement("li");
       li.textContent = note.title || "Untitled";
-
       if (index == current) li.classList.add("active");
-
       li.onclick = () => loadNote(index);
       list.appendChild(li);
     });
@@ -28,7 +27,7 @@ function renderNotes(filter = "") {
 
 // CREATE
 function createNote() {
-  notes.push({ title: "", content: "" });
+  notes.push({ title: "", content: "", font: "Inter" });
   current = notes.length - 1;
   saveNotes();
   loadNote(current);
@@ -41,6 +40,10 @@ function loadNote(index) {
 
   title.value = notes[index].title || "";
   textarea.value = notes[index].content || "";
+
+  const font = notes[index].font || "Inter";
+  textarea.style.fontFamily = font;
+  fontSelector.value = font;
 
   updateWordCount();
   renderNotes(search.value);
@@ -57,6 +60,7 @@ function saveCurrentNote() {
 
   notes[current].title = title.value;
   notes[current].content = textarea.value;
+  notes[current].font = textarea.style.fontFamily;
 
   saveNotes();
 
@@ -72,12 +76,11 @@ function saveCurrentNote() {
 title.addEventListener("input", saveCurrentNote);
 textarea.addEventListener("input", saveCurrentNote);
 
-// ✅ DELETE WITH UNDO
+// DELETE + UNDO
 function deleteNote() {
   if (current === null) return;
 
   deletedNote = notes[current];
-
   notes.splice(current, 1);
 
   if (notes.length === 0) {
@@ -91,11 +94,10 @@ function deleteNote() {
 
   saveNotes();
   renderNotes();
-
   showUndo();
 }
 
-// ✅ UNDO
+// UNDO
 function undoDelete() {
   if (!deletedNote) return;
 
@@ -106,7 +108,7 @@ function undoDelete() {
   renderNotes();
 }
 
-// ✅ POPUP
+// POPUP
 function showUndo() {
   const undo = document.createElement("div");
   undo.className = "undo-popup";
@@ -153,14 +155,15 @@ function exportNotes() {
   a.click();
 }
 
-// FONT SWITCHER
-const fonts = ["Inter", "Roboto", "Playfair Display"];
-let fontIndex = 0;
+// ✅ FONT INSIDE NOTE
+function changeNoteFont() {
+  const font = fontSelector.value;
+  textarea.style.fontFamily = font;
 
-function changeFont() {
-  fontIndex = (fontIndex + 1) % fonts.length;
-  document.body.style.fontFamily = fonts[fontIndex];
-  localStorage.setItem("font", fonts[fontIndex]);
+  if (current !== null) {
+    notes[current].font = font;
+    saveNotes();
+  }
 }
 
 // INIT
@@ -168,12 +171,11 @@ window.onload = () => {
   const theme = localStorage.getItem("theme");
   if (theme === "true") document.body.classList.add("light");
 
-  const savedFont = localStorage.getItem("font");
-  if (savedFont) document.body.style.fontFamily = savedFont;
-
   renderNotes();
 
-  if (current !== null && notes[current]) {
+  if (notes.length === 0) {
+    createNote();
+  } else if (current !== null) {
     loadNote(current);
   }
 };
