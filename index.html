@@ -2,21 +2,25 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>Yassir Notepad</title>
-  <link rel="stylesheet" href="style.css">
+  <title>Yassir Notepad Pro</title>
+  <link rel="stylesheet" href="style.css" />
 </head>
 
 <body>
 
   <div class="container">
-    <h1>📝 Notepad</h1>
+    <h1>📝 Notepad Pro</h1>
 
     <div class="top-bar">
       <input type="text" id="search" placeholder="Search notes...">
-      <button onclick="toggleTheme()">🌙/☀️</button>
+      <div>
+        <button onclick="toggleTheme()">🌙/☀️</button>
+        <button onclick="exportNotes()">📁 Export</button>
+      </div>
     </div>
 
     <div class="main">
+
       <!-- Sidebar -->
       <div class="sidebar">
         <button class="new-btn" onclick="createNote()">+ New Note</button>
@@ -25,17 +29,3 @@
 
       <!-- Editor -->
       <div class="editor">
-        <input id="title" placeholder="Note title...">
-        <textarea id="note" placeholder="Start typing..."></textarea>
-
-        <div class="bottom">
-          <span id="saveStatus">Saved ✅</span>
-          <span id="wordCount">0 words</span>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <script src="script.js"></script>
-</body>
-</html>
