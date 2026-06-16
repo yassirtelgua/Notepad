@@ -44,6 +44,12 @@ h1 {
   border: none;
 }
 
+/* ACTIONS */
+.actions {
+  display: flex;
+  gap: 8px;
+}
+
 /* MAIN */
 .main {
   display: flex;
@@ -58,15 +64,22 @@ h1 {
   border-radius: 12px;
 }
 
+/* NEW NOTE BUTTON */
 .new-btn {
   width: 100%;
-  padding: 10px;
-  background: var(--accent);
+  padding: 12px;
+  background: linear-gradient(135deg, #238636, #2ea043);
   color: white;
-  border: none;
   border-radius: 8px;
+  font-weight: 600;
 }
 
+.new-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 12px rgba(35, 134, 54, 0.4);
+}
+
+/* NOTES LIST */
 #notesList {
   list-style: none;
   padding: 0;
@@ -76,6 +89,11 @@ h1 {
   padding: 10px;
   border-radius: 6px;
   cursor: pointer;
+  transition: 0.2s;
+}
+
+#notesList li:hover {
+  background: rgba(255,255,255,0.1);
 }
 
 #notesList li.active {
@@ -104,7 +122,38 @@ textarea {
   padding: 10px;
   border-radius: 8px;
   border: none;
-  resize: none;
+}
+
+/* BUTTONS MODERN */
+button {
+  cursor: pointer;
+  border: none;
+  padding: 10px 14px;
+  border-radius: 8px;
+  font-weight: 500;
+  transition: all 0.25s ease;
+}
+
+/* ACTION BUTTONS */
+.actions button {
+  background: var(--card);
+  color: var(--text);
+}
+
+.actions button:hover {
+  background: var(--accent);
+  color: white;
+}
+
+/* DELETE BUTTON */
+.bottom button {
+  background: #da3633;
+  color: white;
+}
+
+.bottom button:hover {
+  background: #ff4d4f;
+  transform: scale(1.05);
 }
 
 /* FOOTER */
@@ -114,14 +163,12 @@ textarea {
   margin-top: 8px;
 }
 
-/* BUTTON */
-button {
-  cursor: pointer;
-  border: none;
-  padding: 8px 12px;
-  border-radius: 6px;
+/* PRESS EFFECT */
+button:active {
+  transform: scale(0.95);
 }
 
+/* UNDO POPUP */
 .undo-popup {
   position: fixed;
   bottom: 20px;
