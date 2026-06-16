@@ -31,7 +31,7 @@ body {
 
 .top-bar input {
   padding: 8px;
-  width: 70%;
+  width: 60%;
 }
 
 .main {
@@ -87,6 +87,11 @@ textarea {
 .bottom {
   display: flex;
   justify-content: space-between;
+  align-items: center;
   margin-top: 5px;
   font-size: 14px;
+}
+
+button {
+  cursor: pointer;
 }
