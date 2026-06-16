@@ -8,7 +8,7 @@ const wordCount = document.getElementById("wordCount");
 const saveStatus = document.getElementById("saveStatus");
 const search = document.getElementById("search");
 
-// RENDER NOTES
+// RENDER
 function renderNotes(filter = "") {
   list.innerHTML = "";
 
@@ -25,7 +25,7 @@ function renderNotes(filter = "") {
     });
 }
 
-// CREATE NOTE
+// CREATE
 function createNote() {
   notes.push({ title: "", content: "" });
   current = notes.length - 1;
@@ -33,7 +33,7 @@ function createNote() {
   loadNote(current);
 }
 
-// LOAD NOTE
+// LOAD
 function loadNote(index) {
   current = index;
   localStorage.setItem("currentNote", current);
@@ -45,7 +45,7 @@ function loadNote(index) {
   renderNotes(search.value);
 }
 
-// SAVE NOTES
+// SAVE
 function saveNotes() {
   localStorage.setItem("notes", JSON.stringify(notes));
 }
@@ -71,7 +71,7 @@ function saveCurrentNote() {
 title.addEventListener("input", saveCurrentNote);
 textarea.addEventListener("input", saveCurrentNote);
 
-// DELETE NOTE
+// DELETE
 function deleteNote() {
   if (current === null) return;
 
@@ -101,13 +101,13 @@ search.addEventListener("input", () => {
   renderNotes(search.value);
 });
 
-// THEME TOGGLE
+// THEME
 function toggleTheme() {
   document.body.classList.toggle("light");
   localStorage.setItem("theme", document.body.classList.contains("light"));
 }
 
-// EXPORT NOTES
+// EXPORT
 function exportNotes() {
   const blob = new Blob([JSON.stringify(notes, null, 2)], {
     type: "application/json"
@@ -123,7 +123,17 @@ function exportNotes() {
   URL.revokeObjectURL(url);
 }
 
-// KEYBOARD SHORTCUTS
+// FONT SWITCHER
+const fonts = ["Inter", "Roboto", "Playfair Display"];
+let fontIndex = 0;
+
+function changeFont() {
+  fontIndex = (fontIndex + 1) % fonts.length;
+  document.body.style.fontFamily = fonts[fontIndex];
+  localStorage.setItem("font", fonts[fontIndex]);
+}
+
+// SHORTCUTS
 document.addEventListener("keydown", (e) => {
   if (e.ctrlKey && e.key === "s") {
     e.preventDefault();
@@ -138,10 +148,14 @@ document.addEventListener("keydown", (e) => {
 
 // INIT
 window.onload = () => {
-  // Load theme
   const theme = localStorage.getItem("theme");
   if (theme === "true") {
     document.body.classList.add("light");
+  }
+
+  const savedFont = localStorage.getItem("font");
+  if (savedFont) {
+    document.body.style.fontFamily = savedFont;
   }
 
   renderNotes();
