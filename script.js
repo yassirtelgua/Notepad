@@ -5,12 +5,13 @@ const wordCount = document.getElementById("wordCount");
 // Load saved note
 window.onload = () => {
   const saved = localStorage.getItem("note");
-  if (saved) textarea.value = saved;
-
+  if (saved) {
+    textarea.value = saved;
+  }
   updateWordCount();
 };
 
-// Save + update UI
+// Save + UI feedback
 textarea.addEventListener("input", () => {
   localStorage.setItem("note", textarea.value);
 
@@ -47,4 +48,3 @@ function downloadNote() {
 
   URL.revokeObjectURL(url);
 }
-``
