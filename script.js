@@ -1,20 +1,55 @@
-const textarea = document.getElementById("note");
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background: #0d1117;
+  color: #e6edf3;
+}
 
-// Load saved note
-window.onload = () => {
-  const saved = localStorage.getItem("note");
-  if (saved) {
-    textarea.value = saved;
-  }
-};
+.container {
+  max-width: 700px;
+  margin: 50px auto;
+  text-align: center;
+}
 
-// Save automatically when typing
-textarea.addEventListener("input", () => {
-  localStorage.setItem("note", textarea.value);
-});
+h1 {
+  margin-bottom: 10px;
+}
 
-// Clear button
-function clearNote() {
-  localStorage.removeItem("note");
-  textarea.value = "";
+.status {
+  display: flex;
+  justify-content: space-between;
+  font-size: 14px;
+  margin-bottom: 10px;
+  color: #8b949e;
+}
+
+textarea {
+  width: 100%;
+  height: 300px;
+  padding: 15px;
+  font-size: 16px;
+  border-radius: 10px;
+  border: none;
+  outline: none;
+  resize: none;
+  background: #161b22;
+  color: white;
+}
+
+.buttons {
+  margin-top: 15px;
+}
+
+button {
+  margin: 5px;
+  padding: 10px 20px;
+  border: none;
+  background: #238636;
+  color: white;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+button:last-child {
+  background: #da3633;
 }
