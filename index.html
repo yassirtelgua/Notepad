@@ -4,10 +4,10 @@
   <meta charset="UTF-8" />
   <title>Yassir Notepad Pro</title>
 
-  <!-- ✅ CSS -->
+  <!-- ✅ Correct CSS link -->
   <link rel="stylesheet" href="style.css">
 
-  <!-- ✅ Google Fonts -->
+  <!-- ✅ Correct Google Fonts -->
   <link href="https://fonts.googleapis.com/css2?family=Inter&family=Roboto&family=Playfair+Display&display=swap" rel="stylesheet">
 </head>
 
@@ -28,3 +28,30 @@
 
     <div class="main">
 
+      <!-- Sidebar -->
+      <div class="sidebar">
+        <button class="new-btn" onclick="createNote()">+ New Note</button>
+        <ul id="notesList"></ul>
+      </div>
+
+      <!-- Editor -->
+      <div class="editor">
+        <input id="title" placeholder="Note title...">
+        <textarea id="note" placeholder="Start typing..."></textarea>
+
+        <div class="bottom">
+          <span id="saveStatus">Saved ✅</span>
+          <span id="wordCount">0 words</span>
+          <button onclick="deleteNote()">🗑️</button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ✅ Correct JS link -->
+  <script src="script.js"></script>
+
+</body>
+</html>
+``
