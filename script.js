@@ -1,5 +1,6 @@
 let notes = JSON.parse(localStorage.getItem("notes")) || [];
 let current = localStorage.getItem("currentNote");
+let deletedNote = null;
 
 const list = document.getElementById("notesList");
 const title = document.getElementById("title");
@@ -71,9 +72,11 @@ function saveCurrentNote() {
 title.addEventListener("input", saveCurrentNote);
 textarea.addEventListener("input", saveCurrentNote);
 
-// DELETE
+// ✅ DELETE WITH UNDO
 function deleteNote() {
   if (current === null) return;
+
+  deletedNote = notes[current];
 
   notes.splice(current, 1);
 
@@ -88,6 +91,39 @@ function deleteNote() {
 
   saveNotes();
   renderNotes();
+
+  showUndo();
+}
+
+// ✅ UNDO
+function undoDelete() {
+  if (!deletedNote) return;
+
+  notes.push(deletedNote);
+  deletedNote = null;
+
+  saveNotes();
+  renderNotes();
+}
+
+// ✅ POPUP
+function showUndo() {
+  const undo = document.createElement("div");
+  undo.className = "undo-popup";
+  undo.textContent = "Note deleted ❌ — Click to undo";
+
+  undo.onclick = () => {
+    undoDelete();
+    document.body.removeChild(undo);
+  };
+
+  document.body.appendChild(undo);
+
+  setTimeout(() => {
+    if (document.body.contains(undo)) {
+      document.body.removeChild(undo);
+    }
+  }, 5000);
 }
 
 // WORD COUNT
@@ -109,18 +145,12 @@ function toggleTheme() {
 
 // EXPORT
 function exportNotes() {
-  const blob = new Blob([JSON.stringify(notes, null, 2)], {
-    type: "application/json"
-  });
-
-  const url = URL.createObjectURL(blob);
+  const blob = new Blob([JSON.stringify(notes, null, 2)], { type: "application/json" });
   const a = document.createElement("a");
 
-  a.href = url;
+  a.href = URL.createObjectURL(blob);
   a.download = "notes.json";
   a.click();
-
-  URL.revokeObjectURL(url);
 }
 
 // FONT SWITCHER
@@ -133,30 +163,13 @@ function changeFont() {
   localStorage.setItem("font", fonts[fontIndex]);
 }
 
-// SHORTCUTS
-document.addEventListener("keydown", (e) => {
-  if (e.ctrlKey && e.key === "s") {
-    e.preventDefault();
-    saveCurrentNote();
-  }
-
-  if (e.ctrlKey && e.key === "n") {
-    e.preventDefault();
-    createNote();
-  }
-});
-
 // INIT
 window.onload = () => {
   const theme = localStorage.getItem("theme");
-  if (theme === "true") {
-    document.body.classList.add("light");
-  }
+  if (theme === "true") document.body.classList.add("light");
 
   const savedFont = localStorage.getItem("font");
-  if (savedFont) {
-    document.body.style.fontFamily = savedFont;
-  }
+  if (savedFont) document.body.style.fontFamily = savedFont;
 
   renderNotes();
 
