@@ -19,7 +19,9 @@ function renderNotes(filter = "") {
     .forEach((note, index) => {
       const li = document.createElement("li");
       li.textContent = note.title || "Untitled";
+
       if (index == current) li.classList.add("active");
+
       li.onclick = () => loadNote(index);
       list.appendChild(li);
     });
@@ -44,6 +46,12 @@ function loadNote(index) {
   const font = notes[index].font || "Inter";
   textarea.style.fontFamily = font;
   fontSelector.value = font;
+
+  // ✅ Smooth animation
+  textarea.style.opacity = 0;
+  setTimeout(() => {
+    textarea.style.opacity = 1;
+  }, 120);
 
   updateWordCount();
   renderNotes(search.value);
@@ -155,7 +163,7 @@ function exportNotes() {
   a.click();
 }
 
-// FONT INSIDE NOTE
+// FONT
 function changeNoteFont() {
   const font = fontSelector.value;
   textarea.style.fontFamily = font;
