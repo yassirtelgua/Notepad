@@ -3,26 +3,16 @@
 <head>
   <meta charset="UTF-8" />
   <title>Yassir Notepad</title>
-  style.css
+  <link rel="stylesheet" href="style.css" />
 </head>
 <body>
 
   <div class="container">
     <h1>📝 Notepad</h1>
-
-    <div class="status">
-      <span id="saveStatus">Saved ✅</span>
-      <span id="wordCount">0 words</span>
-    </div>
-
     <textarea id="note" placeholder="Start typing..."></textarea>
-
-    <div class="buttons">
-      <button onclick="downloadNote()">Download</button>
-      <button onclick="clearNote()">Clear</button>
-    </div>
+    <button onclick="clearNote()">Clear</button>
   </div>
 
-  script.js
+  <script src="script.js"></script>
 </body>
 </html>
