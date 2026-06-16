@@ -11,6 +11,7 @@
   --card: #f5f5f5;
 }
 
+/* GLOBAL */
 body {
   margin: 0;
   font-family: Inter, Arial;
@@ -61,8 +62,8 @@ h1 {
   width: 100%;
   padding: 10px;
   background: var(--accent);
-  border: none;
   color: white;
+  border: none;
   border-radius: 8px;
 }
 
@@ -77,10 +78,6 @@ h1 {
   cursor: pointer;
 }
 
-#notesList li:hover {
-  background: rgba(255,255,255,0.1);
-}
-
 #notesList li.active {
   background: var(--accent);
 }
@@ -93,7 +90,7 @@ h1 {
   border-radius: 12px;
 }
 
-#title {
+#title, #fontSelector {
   width: 100%;
   padding: 10px;
   margin-bottom: 8px;
@@ -107,13 +104,13 @@ textarea {
   padding: 10px;
   border-radius: 8px;
   border: none;
+  resize: none;
 }
 
 /* FOOTER */
 .bottom {
   display: flex;
   justify-content: space-between;
-  align-items: center;
   margin-top: 8px;
 }
 
@@ -125,11 +122,6 @@ button {
   border-radius: 6px;
 }
 
-button:hover {
-  opacity: 0.8;
-}
-
-/* UNDO POPUP */
 .undo-popup {
   position: fixed;
   bottom: 20px;
