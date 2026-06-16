@@ -155,7 +155,7 @@ function exportNotes() {
   a.click();
 }
 
-// ✅ FONT INSIDE NOTE
+// FONT INSIDE NOTE
 function changeNoteFont() {
   const font = fontSelector.value;
   textarea.style.fontFamily = font;
