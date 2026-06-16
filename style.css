@@ -1,37 +1,50 @@
-body {
-  margin: 0;
-  font-family: Arial, sans-serif;
-  background: #111;
-  color: white;
+const textarea = document.getElementById("note");
+const saveStatus = document.getElementById("saveStatus");
+const wordCount = document.getElementById("wordCount");
+
+// Load saved note
+window.onload = () => {
+  const saved = localStorage.getItem("note");
+  if (saved) textarea.value = saved;
+
+  updateWordCount();
+};
+
+// Save + update UI
+textarea.addEventListener("input", () => {
+  localStorage.setItem("note", textarea.value);
+
+  saveStatus.textContent = "Saving...";
+  setTimeout(() => {
+    saveStatus.textContent = "Saved ✅";
+  }, 500);
+
+  updateWordCount();
+});
+
+// Word counter
+function updateWordCount() {
+  const words = textarea.value.trim().split(/\s+/).filter(word => word.length > 0);
+  wordCount.textContent = `${words.length} words`;
 }
 
-.container {
-  max-width: 700px;
-  margin: 50px auto;
-  text-align: center;
+// Clear note
+function clearNote() {
+  localStorage.removeItem("note");
+  textarea.value = "";
+  updateWordCount();
 }
 
-h1 {
-  margin-bottom: 20px;
-}
+// Download as .txt
+function downloadNote() {
+  const blob = new Blob([textarea.value], { type: "text/plain" });
+  const url = URL.createObjectURL(blob);
 
-textarea {
-  width: 100%;
-  height: 300px;
-  padding: 15px;
-  font-size: 16px;
-  border-radius: 10px;
-  border: none;
-  outline: none;
-  resize: none;
-}
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = "note.txt";
+  a.click();
 
-button {
-  margin-top: 15px;
-  padding: 10px 20px;
-  border: none;
-  background: red;
-  color: white;
-  border-radius: 8px;
-  cursor: pointer;
+  URL.revokeObjectURL(url);
 }
+``
