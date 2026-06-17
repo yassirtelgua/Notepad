@@ -3,6 +3,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const preview = document.getElementById("preview");
   const timerDisplay = document.getElementById("timer");
   const stats = document.getElementById("stats");
+  const toastContainer = document.getElementById("toastContainer");
 
   const clearBtn = document.getElementById("clearBtn");
   const exportBtn = document.getElementById("exportBtn");
@@ -40,6 +41,22 @@ document.addEventListener("DOMContentLoaded", () => {
   applySystemTheme();
   updateStats();
   updateTimerDisplay();
+
+  function showToast(message, type = "info") {
+    const toast = document.createElement("div");
+    toast.className = `toast ${type}`;
+    toast.textContent = message;
+
+    toastContainer.appendChild(toast);
+
+    setTimeout(() => {
+      toast.classList.add("hide");
+
+      setTimeout(() => {
+        toast.remove();
+      }, 250);
+    }, 2500);
+  }
 
   function saveNote() {
     localStorage.setItem("notepadHTML", note.innerHTML);
@@ -80,14 +97,17 @@ document.addEventListener("DOMContentLoaded", () => {
 
     if (type === "bold") {
       document.execCommand("bold", false, null);
+      showToast("Bold applied", "info");
     }
 
     if (type === "italic") {
       document.execCommand("italic", false, null);
+      showToast("Italic applied", "info");
     }
 
     if (type === "heading") {
       document.execCommand("formatBlock", false, "h1");
+      showToast("Heading applied", "info");
     }
 
     saveNote();
@@ -101,10 +121,12 @@ document.addEventListener("DOMContentLoaded", () => {
       preview.innerHTML = note.innerHTML;
       preview.style.display = "block";
       note.style.display = "none";
+      showToast("Read mode enabled", "info");
     } else {
       preview.style.display = "none";
       note.style.display = "block";
       note.focus();
+      showToast("Edit mode enabled", "info");
     }
   }
 
@@ -118,6 +140,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
     updateStats();
     note.focus();
+
+    showToast("Note cleared", "info");
   }
 
   function exportNote() {
@@ -130,14 +154,16 @@ document.addEventListener("DOMContentLoaded", () => {
     a.click();
 
     URL.revokeObjectURL(url);
+
+    showToast("Note downloaded ✅", "success");
   }
 
   async function copyNote() {
     try {
       await navigator.clipboard.writeText(note.innerText);
-      alert("Copied ✅");
+      showToast("Copied to clipboard ✅", "success");
     } catch {
-      alert("Copy failed. Select text manually and press Ctrl+C.");
+      showToast("Copy failed. Select text manually and press Ctrl+C.", "error");
     }
   }
 
@@ -164,7 +190,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const text = note.innerText.trim();
 
     if (!text) {
-      alert("Write something before saving a version.");
+      showToast("Write something before saving a version.", "error");
       return;
     }
 
@@ -182,6 +208,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
     setHistory(history);
     renderHistoryList();
+
+    showToast("Version saved ✅", "success");
   }
 
   function renderHistoryList() {
@@ -254,6 +282,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
     closeHistoryPanel();
     note.focus();
+
+    showToast("Version restored ✅", "success");
   }
 
   function deleteVersion(index) {
@@ -265,6 +295,8 @@ document.addEventListener("DOMContentLoaded", () => {
     history.splice(index, 1);
     setHistory(history);
     renderHistoryList();
+
+    showToast("Version deleted", "info");
   }
 
   function escapeHTML(text) {
@@ -290,8 +322,11 @@ document.addEventListener("DOMContentLoaded", () => {
         localStorage.setItem("timerSeconds", seconds);
         updateTimerDisplay();
       }, 1000);
+
+      showToast("Timer started", "success");
     } else {
       clearInterval(timerInterval);
+      showToast("Timer stopped", "info");
     }
   }
 
@@ -307,13 +342,16 @@ document.addEventListener("DOMContentLoaded", () => {
 
   function toggleTheme() {
     document.body.classList.toggle("light");
+    showToast("Theme changed", "info");
   }
 
   function toggleFullscreen() {
     if (!document.fullscreenElement) {
       document.documentElement.requestFullscreen();
+      showToast("Fullscreen enabled", "info");
     } else {
       document.exitFullscreen();
+      showToast("Fullscreen disabled", "info");
     }
   }
 
@@ -333,7 +371,7 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   function showAbout() {
-    alert("Notepad Pro\nA simple rich-text notepad with autosave and version history.");
+    showToast("Notepad Pro — rich-text notepad with autosave and version history.", "info");
   }
 
   clearBtn.addEventListener("click", clearNote);
@@ -347,8 +385,16 @@ document.addEventListener("DOMContentLoaded", () => {
   fullscreenBtn.addEventListener("click", toggleFullscreen);
   aboutBtn.addEventListener("click", showAbout);
 
-  fontDownBtn.addEventListener("click", () => changeFontSize(-2));
-  fontUpBtn.addEventListener("click", () => changeFontSize(2));
+  fontDownBtn.addEventListener("click", () => {
+    changeFontSize(-2);
+    showToast("Text size decreased", "info");
+  });
+
+  fontUpBtn.addEventListener("click", () => {
+    changeFontSize(2);
+    showToast("Text size increased", "info");
+  });
+
   boldBtn.addEventListener("click", () => formatText("bold"));
   italicBtn.addEventListener("click", () => formatText("italic"));
   headingBtn.addEventListener("click", () => formatText("heading"));
