@@ -1,4 +1,4 @@
-alert("JS loaded");
+
 
 document.addEventListener("DOMContentLoaded", () => {
   const note = document.getElementById("note");
