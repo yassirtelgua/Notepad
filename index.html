@@ -1,52 +1,50 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Notepad Pro</title>
 
-  <!-- ✅ CORRECT CSS -->
   <link rel="stylesheet" href="style.css">
 
-  <!-- ✅ CORRECT FONT -->
-  <link href="https://fonts.googleapis.com/css2?family=Inter&display=swap" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
 </head>
 
 <body>
 
-  <!-- TOOLBAR -->
-  <div class="toolbar">
-    <span>📝 Notepad</span>
-
-    <div>
-      <button onclick="changeFontSize(-2)">A-</button>
-      <button onclick="changeFontSize(2)">A+</button>
-      <button onclick="togglePreview()">📄</button>
-      <button onclick="clearNote()">🗑️</button>
+  <header class="toolbar">
+    <div class="brand">
+      <span class="logo">📝</span>
+      <span>Notepad</span>
     </div>
+
+    <div class="toolbar-actions">
+      <button onclick="changeFontSize(-2)" title="Decrease font size">A-</button>
+      <button onclick="changeFontSize(2)" title="Increase font size">A+</button>
+      <button onclick="togglePreview()" title="Markdown preview">📄</button>
+      <button onclick="saveHistory()" title="Save history">🕘</button>
+      <button onclick="clearNote()" title="Clear note">🗑️</button>
+    </div>
+  </header>
+
+  <div id="floatingToolbar">
+    <button onclick="formatText('bold')" title="Bold">B</button>
+    <button onclick="formatText('italic')" title="Italic">I</button>
+    <button onclick="formatText('heading')" title="Heading">H</button>
   </div>
 
-  <!-- FLOATING TOOLBAR -->
-  <div id="floatTools">
-    <button onclick="formatText('**')">B</button>
-    <button onclick="formatText('*')">I</button>
-    <button onclick="formatText('# ')">H</button>
-  </div>
+  <main class="editor-wrap">
+    <textarea id="note" placeholder="Start typing..."></textarea>
+    <div id="preview"></div>
+  </main>
 
-  <!-- EDITOR -->
-  <textarea id="note" placeholder="Start typing..."></textarea>
+  <footer class="footer">
+    <span id="timer">00:00</span>
+    <span id="stats">0 characters, 0 words</span>
+  </footer>
 
-  <!-- PREVIEW -->
-  <div id="preview"></div>
-
-  <!-- FOOTER -->
-  <div class="footer">
-    <span id="stats">0 words</span>
-    <span>Auto-save ✅</span>
-  </div>
-
-  <!-- ✅ CORRECT JS -->
   <script src="script.js"></script>
-
 </body>
 </html>
