@@ -7,29 +7,22 @@
   <title>Notepad Pro</title>
 
   <!-- CSS -->
-  <link rel="stylesheet" href="style.css" />
+  style.css
 
   <!-- Fonts -->
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link
-    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&family=JetBrains+Mono:wght@500;700;800&display=swap"
-    rel="stylesheet"
-  />
+  https://fonts.googleapis.com
+  https://fonts.gstatic.com
+  https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&family=JetBrains+Mono:wght@500;700;800&display=swap
 
   <!-- Icons -->
-  <link
-    rel="stylesheet"
-    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
-  />
+  https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css
 
   <!-- JavaScript -->
-  <script src="script.js" defer></script>
+  script.jsscript>
 </head>
 
 <body>
 
-  <!-- Top toolbar -->
   <header class="app-toolbar">
     <div class="toolbar-left">
       <button class="icon-btn brand-btn" id="appMenuBtn" title="Menu">
@@ -67,7 +60,7 @@
     </div>
 
     <div class="toolbar-right">
-      <button class="icon-btn" id="previewBtn" title="Preview">
+      <button class="icon-btn" id="previewBtn" title="Markdown preview">
         <i class="fa-regular fa-window-restore"></i>
       </button>
 
@@ -85,7 +78,6 @@
     </div>
   </header>
 
-  <!-- Floating formatting toolbar -->
   <div class="floating-tools">
     <button class="mini-btn" id="fontDownBtn" title="Smaller text">A-</button>
     <button class="mini-btn" id="fontUpBtn" title="Bigger text">A+</button>
@@ -94,21 +86,13 @@
     <button class="mini-btn" id="headingBtn" title="Heading">H</button>
   </div>
 
-  <!-- Editor area -->
   <main class="editor-shell">
     <section class="editor-frame">
-      <div
-        id="note"
-        contenteditable="true"
-        spellcheck="true"
-        data-placeholder="Start typing..."
-      ></div>
-
+      <textarea id="note" spellcheck="true" placeholder="Start typing..."></textarea>
       <div id="preview"></div>
     </section>
   </main>
 
-  <!-- Bottom status pills -->
   <footer class="bottom-status">
     <span class="pill timer-pill" id="timer">00:00</span>
     <span class="pill stats-pill" id="stats">0 characters, 0 words</span>
