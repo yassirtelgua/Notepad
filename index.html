@@ -67,7 +67,7 @@
     </div>
 
     <div class="toolbar-right">
-      <button class="icon-btn" id="previewBtn" title="Markdown preview">
+      <button class="icon-btn" id="previewBtn" title="Preview">
         <i class="fa-regular fa-window-restore"></i>
       </button>
 
@@ -97,7 +97,13 @@
   <!-- Editor area -->
   <main class="editor-shell">
     <section class="editor-frame">
-      <textarea id="note" spellcheck="true" placeholder="Start typing..."></textarea>
+      <div
+        id="note"
+        contenteditable="true"
+        spellcheck="true"
+        data-placeholder="Start typing..."
+      ></div>
+
       <div id="preview"></div>
     </section>
   </main>
