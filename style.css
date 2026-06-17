@@ -1,82 +1,71 @@
-:root {
-  --bg: #0d1117;
-  --text: #e6edf3;
-  --card: rgba(22, 27, 34, 0.8);
-  --accent: #238636;
-}
-
-.light {
-  --bg: #ffffff;
-  --text: #000;
-  --card: rgba(240, 240, 240, 0.8);
-}
-
 body {
   margin: 0;
-  font-family: Inter, Arial;
-  background: var(--bg);
-  color: var(--text);
+  font-family: Inter, sans-serif;
+  background: #0d1117;
+  color: white;
 }
 
 .container {
-  max-width: 1000px;
+  max-width: 900px;
   margin: auto;
   padding: 20px;
 }
 
-h1 { text-align: center; }
-
 /* LAYOUT */
-.main { display: flex; gap: 12px; }
+.main {
+  display: flex;
+  gap: 10px;
+}
 
 .sidebar {
   width: 30%;
-  background: var(--card);
-  padding: 12px;
-  border-radius: 16px;
+  background: #161b22;
+  padding: 10px;
+  border-radius: 10px;
 }
 
 .editor {
   width: 70%;
-  background: var(--card);
-  padding: 12px;
-  border-radius: 16px;
+  background: #161b22;
+  padding: 10px;
+  border-radius: 10px;
 }
 
 /* INPUTS */
-#title, #fontSelector, textarea, .top-bar input {
+input, textarea, select {
   width: 100%;
-  padding: 10px;
-  border-radius: 8px;
+  margin-bottom: 8px;
+  padding: 8px;
+  border-radius: 6px;
   border: none;
 }
 
 textarea {
-  height: 300px;
+  height: 250px;
 }
 
 /* BUTTONS */
 button {
+  padding: 8px;
+  border-radius: 6px;
   border: none;
-  border-radius: 10px;
-  padding: 10px;
   cursor: pointer;
 }
 
 .new-btn {
   width: 100%;
-  background: linear-gradient(135deg, #238636, #2ea043);
+  background: #238636;
   color: white;
-  font-weight: bold;
 }
 
 /* NOTES */
 #notesList li {
-  padding: 10px;
+  padding: 8px;
   cursor: pointer;
 }
+
 #notesList li.active {
-  background: var(--accent);
+  background: #238636;
 }
 
 /* FLOAT BUTTON */
@@ -84,41 +73,39 @@ button {
   position: fixed;
   bottom: 20px;
   right: 20px;
-  width: 50px;
-  height: 50px;
-  border-radius: 50%;
-  background: #238636;
-  color: white;
-  font-size: 20px;
 }
 
 /* FLOAT WINDOW */
 #floatingWindow {
+  display: none;
   position: fixed;
   bottom: 80px;
   right: 20px;
-  width: 260px;
-  height: 300px;
-  display: none;
-  flex-direction: column;
-  background: var(--card);
+  width: 220px;
+  height: 250px;
+  background: #161b22;
   border-radius: 10px;
 }
 
 #floatingHeader {
-  background: var(--accent);
-  color: white;
-  padding: 8px;
+  padding: 5px;
+  background: #238636;
   cursor: move;
 }
 
 #floatingNote {
-  flex: 1;
-  border: none;
+  width: 100%;
+  height: 80%;
 }
 
 /* MOBILE */
 @media (max-width: 768px) {
-  .main { flex-direction: column; }
-  .sidebar, .editor { width: 100%; }
+  .main {
+    flex-direction: column;
+  }
+
+  .sidebar, .editor {
+    width: 100%;
+  }
 }
+``
