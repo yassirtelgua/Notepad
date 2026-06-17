@@ -3,13 +3,12 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-
   <title>Notepad Pro</title>
 
-  <!-- ✅ CORRECT CSS LINK -->
+  <!-- ✅ CORRECT CSS -->
   <link rel="stylesheet" href="style.css">
 
-  <!-- ✅ CORRECT GOOGLE FONT -->
+  <!-- ✅ GOOGLE FONT -->
   <link href="https://fonts.googleapis.com/css2?family=Inter&display=swap" rel="stylesheet">
 </head>
 
@@ -19,52 +18,41 @@
 
     <h1>📝 Notepad Pro</h1>
 
-    <div class="top-bar">
-      <input type="text" id="search" placeholder="Search notes...">
-      <div class="actions">
-        <button onclick="toggleTheme()">🌙</button>
-        <button onclick="exportNotes()">📁</button>
-      </div>
-    </div>
-
     <div class="main">
-
       <div class="sidebar">
         <button class="new-btn" onclick="createNote()">+ New Note</button>
         <ul id="notesList"></ul>
       </div>
 
       <div class="editor">
-        <input id="title" placeholder="Note title...">
+        <input id="title" placeholder="Title">
 
-        <select id="fontSelector" onchange="changeNoteFont()">
+        <select id="fontSelector" onchange="changeFont()">
           <option value="Inter">Inter</option>
           <option value="Arial">Arial</option>
           <option value="Courier New">Mono</option>
         </select>
 
-        <textarea id="note" placeholder="Start typing..."></textarea>
+        <textarea id="note"></textarea>
 
-        <div class="bottom">
-          <span id="saveStatus">Saved ✅</span>
-          <button onclick="deleteNote()">🗑️</button>
-        </div>
+        <button onclick="deleteNote()">Delete</button>
       </div>
-
     </div>
+
   </div>
 
-  <!-- FLOAT BUTTON -->
-  <button id="floatingBtn">🪟</button>
+  <!-- ✅ FLOAT BUTTON -->
+  <button id="floatBtn">🪟</button>
 
-  <!-- FLOAT WINDOW -->
-  <div id="floatingWindow">
-    <div id="floatingHeader">Floating Note ✏️</div>
-    <textarea id="floatingNote"></textarea>
+  <!-- ✅ FLOAT WINDOW -->
+  <div id="floatWin">
+    <div id="floatHeader">Quick Note</div>
+    <textarea id="floatNote"></textarea>
   </div>
 
-  <!-- ✅ CORRECT JS LINK -->
+  <!-- ✅ CORRECT JS -->
   <script src="script.js"></script>
 
 </body>
 </html>
+``
