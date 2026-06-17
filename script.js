@@ -1,36 +1,53 @@
-const note = document.getElementById("note");
-const preview = document.getElementById("preview");
+const note = document.getElementById("note");const note = documentElementById("preview");
 const stats = document.getElementById("stats");
+const timerDisplay = document.getElementById("timer");
 
-let fontSize = 18;
+let fontSize = Number(localStorage.getItem("fontSize")) || 24;
 let previewMode = false;
+let seconds = 0;
 
-note.value = localStorage.getItem("note") || "";
+note.style.fontSize = fontSize + "px";
+preview.style.fontSize = fontSize + "px";
 
+note.value = localStorage.getItem("notepadText") || "";
+updateStats();
+
+/* AUTOSAVE */
 note.addEventListener("input", () => {
-  localStorage.setItem("note", note.value);
+  localStorage.setItem("notepadText", note.value);
   updateStats();
 });
 
+/* STATS */
 function updateStats() {
-  const words = note.value.trim().split(/\s+/).filter(w => w).length;
-  stats.textContent = words + " words";
+  const text = note.value;
+  const characters = text.length;
+  const words = text.trim().split(/\s+/).filter(Boolean).length;
+
+  stats.textContent = `${characters} characters, ${words} words`;
 }
 
-updateStats();
+/* FONT SIZE */
+function changeFontSize(amount) {
+  fontSize += amount;
 
-// FONT SIZE
-function changeFontSize(change) {
-  fontSize += change;
+  if (fontSize < 14) fontSize = 14;
+  if (fontSize > 48) fontSize = 48;
+
   note.style.fontSize = fontSize + "px";
+  preview.style.fontSize = fontSize + "px";
+
+  localStorage.setItem("fontSize", fontSize);
 }
 
-// PREVIEW
+/* MARKDOWN */
 function parseMarkdown(text) {
   return text
+    .replace(/^### (.*$)/gim, "<h3>$1</h3>")
+    .replace(/^## (.*$)/gim, "<h2>$1</h2>")
     .replace(/^# (.*$)/gim, "<h1>$1</h1>")
-    .replace(/\*\*(.*?)\*\*/g, "<b>$1</b>")
-    .replace(/\*(.*?)\*/g, "<i>$1</i>")
+    .replace(/\*\*(.*?)\*\*/gim, "<strong>$1</strong>")
+    .replace(/\*(.*?)\*/gim, "<em>$1</em>")
     .replace(/\n/g, "<br>");
 }
 
@@ -47,20 +64,85 @@ function togglePreview() {
   }
 }
 
-// FORMAT
-function formatText(symbol) {
+/* FORMAT TOOLBAR */
+function formatText(type) {
+  note.focus();
+
   const start = note.selectionStart;
   const end = note.selectionEnd;
-
   const selected = note.value.slice(start, end);
-  const newText = symbol + selected + symbol;
 
-  note.setRangeText(newText);
-}
+  let formatted = selected;
 
-// CLEAR
-function clearNote() {
-  note.value = "";
-  localStorage.removeItem("note");
+  if (type === "bold") {
+    formatted = `**${selected || "bold text"}**`;
+  }
+
+  if (type === "italic") {
+    formatted = `*${selected || "italic text"}*`;
+  }
+
+  if (type === "heading") {
+    formatted = `# ${selected || "Heading"}`;
+  }
+
+  note.setRangeText(formatted, start, end, "end");
+
+  localStorage.setItem("notepadText", note.value);
   updateStats();
 }
+
+/* SAVE HISTORY */
+function saveHistory() {
+  const history = JSON.parse(localStorage.getItem("noteHistory")) || [];
+
+  history.push({
+    text: note.value,
+    date: new Date().toISOString()
+  });
+
+  if (history.length > 10) {
+    history.shift();
+  }
+
+  localStorage.setItem("noteHistory", JSON.stringify(history));
+
+  alert("History saved ✅");
+}
+
+/* CLEAR */
+function clearNote() {
+  const confirmClear = confirm("Clear this note?");
+
+  if (!confirmClear) return;
+
+  note.value = "";
+  localStorage.removeItem("notepadText");
+  updateStats();
+}
+
+/* TIMER */
+setInterval(() => {
+  seconds++;
+
+  const minutes = Math.floor(seconds / 60);
+  const remainingSeconds = seconds % 60;
+
+  timerDisplay.textContent =
+    `${String(minutes).padStart(2, "0")}:${String(remainingSeconds).padStart(2, "0")}`;
+}, 1000);
+
+/* AUTO THEME */
+function applySystemTheme() {
+  const prefersLight = window.matchMedia("(prefers-color-scheme: light)").matches;
+
+  if (prefersLight) {
+    document.body.classList.add("light");
+  } else {
+    document.body.classList.remove("light");
+  }
+}
+
+applySystemTheme();
+
+window.matchMedia("(prefers-color-scheme: light)").addEventListener("change", applySystemTheme);
