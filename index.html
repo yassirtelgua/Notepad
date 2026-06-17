@@ -2,14 +2,14 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Notepad Pro</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Yassir Notepad Pro</title>
 
-  <!-- ✅ Correct CSS -->
+  <!-- ✅ CSS -->
   style.css
 
-  <!-- ✅ Google Font -->
-  https://fonts.googleapis.com/css2?family=Inter&display=swap
+  <!-- ✅ Google Fonts -->
+  https://fonts.googleapis.com/css2?family=Inter&family=Roboto&family=Playfair+Display&display=swap
 </head>
 
 <body>
@@ -17,35 +17,44 @@
   <div class="container">
     <h1>📝 Notepad Pro</h1>
 
+    <div class="top-bar">
+      <input type="text" id="search" placeholder="Search notes...">
+
+      <div class="actions">
+        <button onclick="toggleTheme()">🌙</button>
+        <button onclick="exportNotes()">📁</button>
+      </div>
+    </div>
+
     <div class="main">
 
-      <!-- Sidebar -->
       <div class="sidebar">
         <button class="new-btn" onclick="createNote()">+ New Note</button>
         <ul id="notesList"></ul>
       </div>
 
-      <!-- Editor -->
       <div class="editor">
-        <input id="title" placeholder="Note title..." />
+        <input id="title" placeholder="Note title...">
 
         <select id="fontSelector" onchange="changeNoteFont()">
           <option value="Inter">Inter</option>
-          <option value="Arial">Arial</option>
-          <option value="Courier New">Mono</option>
+          <option value="Roboto">Roboto</option>
+          <option value="Playfair Display">Playfair</option>
         </select>
 
         <textarea id="note" placeholder="Start typing..."></textarea>
 
         <div class="bottom">
-          <button onclick="deleteNote()">Delete</button>
+          <span id="saveStatus">Saved ✅</span>
+          <span id="wordCount">0 words</span>
+          <button onclick="deleteNote()">🗑️</button>
         </div>
       </div>
 
     </div>
   </div>
 
-  <!-- ✅ Correct JS -->
+  <!-- ✅ JS -->
   script.js
 
 </body>
