@@ -1,8 +1,4 @@
-
-
-document.addEventListener("DOMContentLoaded", () => {
-  const note = document.getElementById("note");
-  const preview = document.getElementById("preview");
+document.addEventListener("DOMContentLoaded", () => {document.addEventListener("DOMContentLoaded", () =>  const preview = document.getElementById("preview");
   const timerDisplay = document.getElementById("timer");
   const stats = document.getElementById("stats");
 
@@ -28,8 +24,8 @@ document.addEventListener("DOMContentLoaded", () => {
   let timerRunning = false;
   let timerInterval = null;
 
-  // Initial load
-  note.value = localStorage.getItem("notepadText") || "";
+  // Load saved rich text
+  note.innerHTML = localStorage.getItem("notepadHTML") || "";
   note.style.fontSize = fontSize + "px";
   preview.style.fontSize = fontSize + "px";
 
@@ -37,26 +33,29 @@ document.addEventListener("DOMContentLoaded", () => {
   updateStats();
   updateTimerDisplay();
 
-  // Autosave
+  // Autosave rich text
   note.addEventListener("input", () => {
-    localStorage.setItem("notepadText", note.value);
+    saveNote();
     updateStats();
 
     if (previewMode) {
-      preview.innerHTML = parseMarkdown(note.value);
+      preview.innerHTML = note.innerHTML;
     }
   });
 
-  // Stats
+  function saveNote() {
+    localStorage.setItem("notepadHTML", note.innerHTML);
+    localStorage.setItem("notepadText", note.innerText);
+  }
+
   function updateStats() {
-    const text = note.value;
+    const text = note.innerText || "";
     const characters = text.length;
     const words = text.trim().split(/\s+/).filter(Boolean).length;
 
     stats.textContent = `${characters} characters, ${words} words`;
   }
 
-  // Font size
   function changeFontSize(amount) {
     fontSize += amount;
 
@@ -69,23 +68,30 @@ document.addEventListener("DOMContentLoaded", () => {
     localStorage.setItem("fontSize", fontSize);
   }
 
-  // Markdown parser
-  function parseMarkdown(text) {
-    return text
-      .replace(/^### (.*$)/gim, "<h3>$1</h3>")
-      .replace(/^## (.*$)/gim, "<h2>$1</h2>")
-      .replace(/^# (.*$)/gim, "<h1>$1</h1>")
-      .replace(/\*\*(.*?)\*\*/gim, "<strong>$1</strong>")
-      .replace(/\*(.*?)\*/gim, "<em>$1</em>")
-      .replace(/\n/g, "<br>");
+  function formatText(type) {
+    note.focus();
+
+    if (type === "bold") {
+      document.execCommand("bold", false, null);
+    }
+
+    if (type === "italic") {
+      document.execCommand("italic", false, null);
+    }
+
+    if (type === "heading") {
+      document.execCommand("formatBlock", false, "h1");
+    }
+
+    saveNote();
+    updateStats();
   }
 
-  // Preview toggle
   function togglePreview() {
     previewMode = !previewMode;
 
     if (previewMode) {
-      preview.innerHTML = parseMarkdown(note.value);
+      preview.innerHTML = note.innerHTML;
       preview.style.display = "block";
       note.style.display = "none";
     } else {
@@ -95,48 +101,19 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }
 
-  // Format text
-  function formatText(type) {
-    note.focus();
-
-    const start = note.selectionStart;
-    const end = note.selectionEnd;
-    const selected = note.value.slice(start, end);
-
-    let formatted = selected;
-
-    if (type === "bold") {
-      formatted = `**${selected || "bold text"}**`;
-    }
-
-    if (type === "italic") {
-      formatted = `*${selected || "italic text"}*`;
-    }
-
-    if (type === "heading") {
-      formatted = `# ${selected || "Heading"}`;
-    }
-
-    note.setRangeText(formatted, start, end, "end");
-
-    localStorage.setItem("notepadText", note.value);
-    updateStats();
-  }
-
-  // Clear note
   function clearNote() {
     const confirmClear = confirm("Clear this note?");
     if (!confirmClear) return;
 
-    note.value = "";
+    note.innerHTML = "";
+    localStorage.removeItem("notepadHTML");
     localStorage.removeItem("notepadText");
     updateStats();
     note.focus();
   }
 
-  // Export note
   function exportNote() {
-    const blob = new Blob([note.value], { type: "text/plain" });
+    const blob = new Blob([note.innerText], { type: "text/plain" });
     const url = URL.createObjectURL(blob);
 
     const a = document.createElement("a");
@@ -147,22 +124,21 @@ document.addEventListener("DOMContentLoaded", () => {
     URL.revokeObjectURL(url);
   }
 
-  // Copy note
   async function copyNote() {
     try {
-      await navigator.clipboard.writeText(note.value);
+      await navigator.clipboard.writeText(note.innerText);
       alert("Copied ✅");
     } catch {
       alert("Copy failed. Select text manually and press Ctrl+C.");
     }
   }
 
-  // Save history
   function saveHistory() {
     const history = JSON.parse(localStorage.getItem("noteHistory")) || [];
 
     history.push({
-      text: note.value,
+      html: note.innerHTML,
+      text: note.innerText,
       date: new Date().toISOString()
     });
 
@@ -174,7 +150,6 @@ document.addEventListener("DOMContentLoaded", () => {
     alert("History saved ✅");
   }
 
-  // Timer display
   function updateTimerDisplay() {
     const minutes = Math.floor(seconds / 60);
     const remainingSeconds = seconds % 60;
@@ -183,7 +158,6 @@ document.addEventListener("DOMContentLoaded", () => {
       `${String(minutes).padStart(2, "0")}:${String(remainingSeconds).padStart(2, "0")}`;
   }
 
-  // Timer toggle
   function toggleTimer() {
     timerRunning = !timerRunning;
 
@@ -198,7 +172,6 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }
 
-  // Theme
   function applySystemTheme() {
     const prefersLight = window.matchMedia("(prefers-color-scheme: light)").matches;
 
@@ -213,7 +186,6 @@ document.addEventListener("DOMContentLoaded", () => {
     document.body.classList.toggle("light");
   }
 
-  // Fullscreen
   function toggleFullscreen() {
     if (!document.fullscreenElement) {
       document.documentElement.requestFullscreen();
@@ -222,13 +194,12 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }
 
-  // Share note
   async function shareNote() {
     if (navigator.share) {
       try {
         await navigator.share({
           title: "My note",
-          text: note.value
+          text: note.innerText
         });
       } catch {
         return;
@@ -259,4 +230,5 @@ document.addEventListener("DOMContentLoaded", () => {
     .matchMedia("(prefers-color-scheme: light)")
     .addEventListener("change", applySystemTheme);
 });
-``
+
+  const note = document.getElementById("note");
