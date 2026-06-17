@@ -2,7 +2,7 @@ body {
   margin: 0;
   font-family: Inter, sans-serif;
   background: #0b1218;
-  color: #e6edf3;
+  color: white;
   display: flex;
   flex-direction: column;
   height: 100vh;
@@ -10,54 +10,61 @@ body {
 
 /* TOOLBAR */
 .toolbar {
+  padding: 10px 20px;
+  background: #111827;
   display: flex;
   justify-content: space-between;
-  padding: 12px 20px;
-  background: #111827;
-  align-items: center;
 }
 
-.title {
-  font-weight: 600;
-  font-size: 18px;
-}
-
-.toolbar button {
-  margin-left: 8px;
-  padding: 6px 10px;
+button {
   background: #1f2937;
   border: none;
-  border-radius: 6px;
   color: white;
+  padding: 6px 10px;
+  margin-left: 5px;
   cursor: pointer;
 }
 
-.toolbar button:hover {
-  background: #374151;
+/* FLOAT TOOLBAR */
+#floatTools {
+  position: fixed;
+  top: 80px;
+  right: 20px;
+  background: #1f2937;
+  padding: 8px;
+  border-radius: 8px;
 }
 
 /* EDITOR */
 textarea {
   flex: 1;
   width: 100%;
+  padding: 20px;
   border: none;
   outline: none;
   resize: none;
   background: #0b1218;
   color: white;
+  font-size: 18px;
+}
 
-  padding: 30px;
-  font-size: 20px;
-  line-height: 1.7;
+/* PREVIEW */
+#preview {
+  display: none;
+  padding: 20px;
+  overflow: auto;
 }
 
 /* FOOTER */
 .footer {
+  background: #111827;
+  padding: 10px 20px;
   display: flex;
   justify-content: space-between;
-  padding: 10px 20px;
-  background: #111827;
-  font-size: 14px;
-  color: #9ca3af;
 }
-``
+
+/* LIGHT MODE */
+.light {
+  background: white;
+  color: black;
+}
