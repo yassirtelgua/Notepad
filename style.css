@@ -8,7 +8,6 @@ body {
   height: 100vh;
 }
 
-/* TOOLBAR */
 .toolbar {
   padding: 10px 20px;
   background: #111827;
@@ -25,46 +24,31 @@ button {
   cursor: pointer;
 }
 
-/* FLOAT TOOLBAR */
 #floatTools {
   position: fixed;
   top: 80px;
   right: 20px;
-  background: #1f2937;
-  padding: 8px;
-  border-radius: 8px;
 }
 
-/* EDITOR */
 textarea {
   flex: 1;
-  width: 100%;
   padding: 20px;
+  background: #0b1218;
+  color: white;
   border: none;
   outline: none;
   resize: none;
-  background: #0b1218;
-  color: white;
   font-size: 18px;
 }
 
-/* PREVIEW */
 #preview {
   display: none;
   padding: 20px;
-  overflow: auto;
 }
 
-/* FOOTER */
 .footer {
   background: #111827;
   padding: 10px 20px;
   display: flex;
   justify-content: space-between;
-}
-
-/* LIGHT MODE */
-.light {
-  background: white;
-  color: black;
 }
