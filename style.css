@@ -111,12 +111,6 @@ button {
   transform: translateY(-1px);
 }
 
-.icon-btn.active {
-  background: rgba(114, 183, 255, 0.16);
-  color: var(--brand);
-  box-shadow: 0 0 0 1px rgba(114, 183, 255, 0.25);
-}
-
 .icon-btn:active,
 .brand-btn:active,
 .about-btn:active,
@@ -164,12 +158,6 @@ button {
   display: flex;
   gap: 8px;
   box-shadow: 0 14px 35px rgba(0, 0, 0, 0.35);
-}
-
-.read-mode .floating-tools {
-  opacity: 0;
-  pointer-events: none;
-  transform: translateY(-8px);
 }
 
 .mini-btn {
@@ -234,23 +222,8 @@ button {
   margin: 0.6em 0;
 }
 
-/* READ MODE */
 #preview {
   display: none;
-}
-
-.read-mode #preview {
-  max-width: 900px;
-  margin: 0 auto;
-  font-family: Georgia, "Times New Roman", serif;
-  font-weight: 500;
-  line-height: 1.85;
-  letter-spacing: 0.2px;
-}
-
-.read-mode .editor-frame {
-  border-left: none;
-  border-right: none;
 }
 
 /* BOTTOM STATUS */
