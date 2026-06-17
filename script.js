@@ -1,8 +1,5 @@
 document.addEventListener("DOMContentLoaded", () => {
-  const note = document.getElementById("note");
-  const preview = document.getElementById("preview");
-  const timerDisplay = document.getElementById("timer");
-  const stats = document.getElementById("stats");
+  const note = document.getElement stats = document.getElementById("stats");  const note = document.getElementById("note");
   const toastContainer = document.getElementById("toastContainer");
 
   const clearBtn = document.getElementById("clearBtn");
@@ -43,6 +40,8 @@ document.addEventListener("DOMContentLoaded", () => {
   updateTimerDisplay();
 
   function showToast(message, type = "info") {
+    if (!toastContainer) return;
+
     const toast = document.createElement("div");
     toast.className = `toast ${type}`;
     toast.textContent = message;
@@ -92,8 +91,19 @@ document.addEventListener("DOMContentLoaded", () => {
     localStorage.setItem("fontSize", fontSize);
   }
 
+  function focusEditor() {
+    if (!readMode) {
+      note.focus();
+    }
+  }
+
   function formatText(type) {
-    note.focus();
+    if (readMode) {
+      showToast("Switch to Edit mode first", "error");
+      return;
+    }
+
+    focusEditor();
 
     if (type === "bold") {
       document.execCommand("bold", false, null);
@@ -389,36 +399,113 @@ document.addEventListener("DOMContentLoaded", () => {
     showToast("Notepad Pro — rich-text notepad with autosave and version history.", "info");
   }
 
-  clearBtn.addEventListener("click", clearNote);
-  exportBtn.addEventListener("click", exportNote);
-  copyBtn.addEventListener("click", copyNote);
-  historyBtn.addEventListener("click", openHistoryPanel);
-  themeBtn.addEventListener("click", toggleTheme);
-  timerBtn.addEventListener("click", toggleTimer);
-  shareBtn.addEventListener("click", shareNote);
-  previewBtn.addEventListener("click", toggleReadMode);
-  fullscreenBtn.addEventListener("click", toggleFullscreen);
-  aboutBtn.addEventListener("click", showAbout);
+  function safeClick(element, callback) {
+    if (element) {
+      element.addEventListener("click", callback);
+    }
+  }
 
-  fontDownBtn.addEventListener("click", () => {
+  /* BUTTON EVENTS */
+  safeClick(clearBtn, clearNote);
+  safeClick(exportBtn, exportNote);
+  safeClick(copyBtn, copyNote);
+  safeClick(historyBtn, openHistoryPanel);
+  safeClick(themeBtn, toggleTheme);
+  safeClick(timerBtn, toggleTimer);
+  safeClick(shareBtn, shareNote);
+  safeClick(previewBtn, toggleReadMode);
+  safeClick(fullscreenBtn, toggleFullscreen);
+  safeClick(aboutBtn, showAbout);
+
+  safeClick(fontDownBtn, () => {
     changeFontSize(-2);
     showToast("Text size decreased", "info");
   });
 
-  fontUpBtn.addEventListener("click", () => {
+  safeClick(fontUpBtn, () => {
     changeFontSize(2);
     showToast("Text size increased", "info");
   });
 
-  boldBtn.addEventListener("click", () => formatText("bold"));
-  italicBtn.addEventListener("click", () => formatText("italic"));
-  headingBtn.addEventListener("click", () => formatText("heading"));
+  safeClick(boldBtn, () => formatText("bold"));
+  safeClick(italicBtn, () => formatText("italic"));
+  safeClick(headingBtn, () => formatText("heading"));
 
-  closeHistoryBtn.addEventListener("click", closeHistoryPanel);
-  historyOverlay.addEventListener("click", closeHistoryPanel);
-  saveVersionBtn.addEventListener("click", saveCurrentVersion);
+  safeClick(closeHistoryBtn, closeHistoryPanel);
+  safeClick(historyOverlay, closeHistoryPanel);
+  safeClick(saveVersionBtn, saveCurrentVersion);
+
+  /* FIXED KEYBOARD SHORTCUTS */
+  document.addEventListener(
+    "keydown",
+    (event) => {
+      const key = event.key.toLowerCase();
+      const shortcut = event.ctrlKey || event.metaKey;
+
+      if (!shortcut && event.key !== "Escape") return;
+
+      if (shortcut && key === "b") {
+        event.preventDefault();
+        event.stopPropagation();
+        formatText("bold");
+        return;
+      }
+
+      if (shortcut && key === "i") {
+        event.preventDefault();
+        event.stopPropagation();
+        formatText("italic");
+        return;
+      }
+
+      if (shortcut && key === "s") {
+        event.preventDefault();
+        event.stopPropagation();
+        saveCurrentVersion();
+        return;
+      }
+
+      if (shortcut && key === "d") {
+        event.preventDefault();
+        event.stopPropagation();
+        exportNote();
+        return;
+      }
+
+      if (shortcut && event.shiftKey && key === "l") {
+        event.preventDefault();
+        event.stopPropagation();
+        toggleTheme();
+        return;
+      }
+
+      if (shortcut && event.key === "Enter") {
+        event.preventDefault();
+        event.stopPropagation();
+        toggleReadMode();
+        return;
+      }
+
+      if (event.key === "Escape") {
+        event.preventDefault();
+
+        if (historyPanel.classList.contains("show")) {
+          closeHistoryPanel();
+          return;
+        }
+
+        if (readMode) {
+          toggleReadMode();
+          return;
+        }
+      }
+    },
+    true
+  );
 
   window
     .matchMedia("(prefers-color-scheme: light)")
     .addEventListener("change", applySystemTheme);
 });
+  const preview = document.getElementById("preview");
+  const timerDisplay = document.getElementById("timer");
