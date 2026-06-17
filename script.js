@@ -1,101 +1,160 @@
 let notes = JSON.parse(localStorage.getItem("notes")) || [];
-let current = 0;
+let current = localStorage.getItem("currentNote");
+let deletedNote = null;
 
 const list = document.getElementById("notesList");
 const title = document.getElementById("title");
-const note = document.getElementById("note");
+const textarea = document.getElementById("note");
+const wordCount = document.getElementById("wordCount");
+const saveStatus = document.getElementById("saveStatus");
+const search = document.getElementById("search");
 const fontSelector = document.getElementById("fontSelector");
 
-// Render notes
-function renderNotes() {
+function renderNotes(filter = "") {
   list.innerHTML = "";
 
-  notes.forEach((n, i) => {
-    const li = document.createElement("li");
-    li.textContent = n.title || "Untitled";
+  notes
+    .filter(n => (n.title || "").toLowerCase().includes(filter.toLowerCase()))
+    .forEach((note, index) => {
+      const li = document.createElement("li");
+      li.textContent = note.title || "Untitled";
 
-    if (i === current) li.classList.add("active");
+      if (index == current) li.classList.add("active");
 
-    li.onclick = () => loadNote(i);
-
-    list.appendChild(li);
-  });
+      li.onclick = () => loadNote(index);
+      list.appendChild(li);
+    });
 }
 
-// Create new note
 function createNote() {
-  notes.push({
-    title: "",
-    content: "",
-    font: "Inter"
-  });
-
+  notes.push({ title: "", content: "", font: "Inter" });
   current = notes.length - 1;
   saveNotes();
   loadNote(current);
 }
 
-// Load note
 function loadNote(index) {
   current = index;
+  localStorage.setItem("currentNote", current);
 
-  const n = notes[index];
+  title.value = notes[index].title || "";
+  textarea.value = notes[index].content || "";
 
-  title.value = n.title;
-  note.value = n.content;
-
-  const font = n.font || "Inter";
-  note.style.fontFamily = font;
+  const font = notes[index].font || "Inter";
+  textarea.style.fontFamily = font;
   fontSelector.value = font;
 
-  renderNotes();
+  textarea.style.opacity = 0;
+  setTimeout(() => {
+    textarea.style.opacity = 1;
+  }, 100);
+
+  updateWordCount();
+  renderNotes(search.value);
 }
 
-// Save notes
 function saveNotes() {
   localStorage.setItem("notes", JSON.stringify(notes));
 }
 
-// Update current note
-function updateNote() {
+function saveCurrentNote() {
+  if (current === null) return;
+
   notes[current].title = title.value;
-  notes[current].content = note.value;
-  notes[current].font = fontSelector.value;
+  notes[current].content = textarea.value;
+  notes[current].font = textarea.style.fontFamily;
+
+  saveNotes();
+
+  saveStatus.textContent = "Saving...";
+  setTimeout(() => {
+    saveStatus.textContent = "Saved ✅";
+  }, 300);
+
+  updateWordCount();
+  renderNotes(search.value);
+}
+
+title.addEventListener("input", saveCurrentNote);
+textarea.addEventListener("input", saveCurrentNote);
+
+function deleteNote() {
+  if (current === null) return;
+
+  deletedNote = notes[current];
+  notes.splice(current, 1);
+
+  current = 0;
+  saveNotes();
+  renderNotes();
+  showUndo();
+}
+
+function undoDelete() {
+  if (!deletedNote) return;
+
+  notes.push(deletedNote);
+  deletedNote = null;
 
   saveNotes();
   renderNotes();
 }
 
-// Events
-title.addEventListener("input", updateNote);
-note.addEventListener("input", updateNote);
+function showUndo() {
+  const undo = document.createElement("div");
+  undo.className = "undo-popup";
+  undo.textContent = "Note deleted — click to undo";
 
-// Delete note
-function deleteNote() {
-  notes.splice(current, 1);
+  undo.onclick = () => {
+    undoDelete();
+    document.body.removeChild(undo);
+  };
 
-  if (notes.length === 0) {
-    createNote();
-  } else {
-    current = Math.max(0, current - 1);
-    loadNote(current);
-  }
+  document.body.appendChild(undo);
 
-  saveNotes();
+  setTimeout(() => {
+    if (document.body.contains(undo)) {
+      document.body.removeChild(undo);
+    }
+  }, 5000);
 }
 
-// Change font
+function updateWordCount() {
+  const words = textarea.value.trim().split(/\s+/).filter(w => w);
+  wordCount.textContent = words.length + " words";
+}
+
+search.addEventListener("input", () => renderNotes(search.value));
+
+function toggleTheme() {
+  document.body.classList.toggle("light");
+}
+
+function exportNotes() {
+  const blob = new Blob([JSON.stringify(notes)], { type: "application/json" });
+  const a = document.createElement("a");
+
+  a.href = URL.createObjectURL(blob);
+  a.download = "notes.json";
+  a.click();
+}
+
 function changeNoteFont() {
-  note.style.fontFamily = fontSelector.value;
-  updateNote();
+  const font = fontSelector.value;
+  textarea.style.fontFamily = font;
+
+  if (current !== null) {
+    notes[current].font = font;
+    saveNotes();
+  }
 }
 
-// Init
 window.onload = () => {
+  renderNotes();
+
   if (notes.length === 0) {
     createNote();
   } else {
-    loadNote(0);
+    loadNote(current || 0);
   }
 };
-``
