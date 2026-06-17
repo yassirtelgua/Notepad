@@ -4,93 +4,93 @@ let current = 0;
 const list = document.getElementById("notesList");
 const title = document.getElementById("title");
 const note = document.getElementById("note");
+const fontSelector = document.getElementById("fontSelector");
 
-// RENDER
-function render() {
+// Render notes
+function renderNotes() {
   list.innerHTML = "";
 
   notes.forEach((n, i) => {
-    let li = document.createElement("li");
+    const li = document.createElement("li");
     li.textContent = n.title || "Untitled";
-    if (i === current) li.style.background = "green";
+
+    if (i === current) li.classList.add("active");
+
     li.onclick = () => loadNote(i);
+
     list.appendChild(li);
   });
 }
 
-// CREATE
+// Create new note
 function createNote() {
-  notes.push({ title: "", content: "", font: "Inter" });
+  notes.push({
+    title: "",
+    content: "",
+    font: "Inter"
+  });
+
   current = notes.length - 1;
-  save();
+  saveNotes();
   loadNote(current);
 }
 
-// LOAD
-function loadNote(i) {
-  current = i;
-  title.value = notes[i].title;
-  note.value = notes[i].content;
-  note.style.fontFamily = notes[i].font;
-  render();
+// Load note
+function loadNote(index) {
+  current = index;
+
+  const n = notes[index];
+
+  title.value = n.title;
+  note.value = n.content;
+
+  const font = n.font || "Inter";
+  note.style.fontFamily = font;
+  fontSelector.value = font;
+
+  renderNotes();
 }
 
-// SAVE
-function save() {
+// Save notes
+function saveNotes() {
   localStorage.setItem("notes", JSON.stringify(notes));
 }
 
-// UPDATE
-function update() {
+// Update current note
+function updateNote() {
   notes[current].title = title.value;
   notes[current].content = note.value;
-  save();
-  render();
+  notes[current].font = fontSelector.value;
+
+  saveNotes();
+  renderNotes();
 }
 
-title.oninput = update;
-note.oninput = update;
+// Events
+title.addEventListener("input", updateNote);
+note.addEventListener("input", updateNote);
 
-// DELETE
+// Delete note
 function deleteNote() {
   notes.splice(current, 1);
 
   if (notes.length === 0) {
     createNote();
   } else {
-    current = 0;
-    loadNote(0);
+    current = Math.max(0, current - 1);
+    loadNote(current);
   }
 
-  save();
+  saveNotes();
 }
 
-// FONT
-function changeFont() {
-  const font = document.getElementById("fontSelector").value;
-  note.style.fontFamily = font;
-  notes[current].font = font;
-  save();
+// Change font
+function changeNoteFont() {
+  note.style.fontFamily = fontSelector.value;
+  updateNote();
 }
 
-// FLOAT WINDOW
-const floatBtn = document.getElementById("floatBtn");
-const floatWin = document.getElementById("floatWin");
-const floatNote = document.getElementById("floatNote");
-
-floatBtn.onclick = () => {
-  floatWin.style.display =
-    floatWin.style.display === "block" ? "none" : "block";
-};
-
-// SAVE FLOAT NOTE
-floatNote.value = localStorage.getItem("float") || "";
-
-floatNote.oninput = () => {
-  localStorage.setItem("float", floatNote.value);
-};
-
-// INIT
+// Init
 window.onload = () => {
   if (notes.length === 0) {
     createNote();
