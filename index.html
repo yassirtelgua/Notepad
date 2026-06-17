@@ -5,37 +5,47 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Notepad Pro</title>
 
+  <!-- ✅ CSS -->
   <link rel="stylesheet" href="style.css">
 
-  <!-- Font -->
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+  <!-- ✅ FONT -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter&display=swap" rel="stylesheet">
 </head>
 
 <body>
 
-  <!-- TOP BAR -->
+  <!-- ✅ TOOLBAR -->
   <div class="toolbar">
-    <div class="left">
-      <span class="title">Notepad</span>
-    </div>
+    <span>📝 Notepad</span>
 
-    <div class="right">
-      <button onclick="deleteNote()">🗑️</button>
-      <button onclick="exportNotes()">📥</button>
-      <button onclick="toggleTimer()">⏱</button>
-      <button onclick="toggleTheme()">🌙</button>
+    <div>
+      <button onclick="changeFontSize(-2)">A-</button>
+      <button onclick="changeFontSize(2)">A+</button>
+      <button onclick="togglePreview()">📄</button>
+      <button onclick="clearNote()">🗑️</button>
     </div>
   </div>
 
-  <!-- MAIN EDITOR -->
+  <!-- ✅ FLOAT TOOLBAR -->
+  <div id="floatTools">
+    <button onclick="formatText('**')">B</button>
+    <button onclick="formatText('*')">I</button>
+    <button onclick="formatText('# ')">H</button>
+  </div>
+
+  <!-- ✅ EDITOR -->
   <textarea id="note" placeholder="Start typing..."></textarea>
 
-  <!-- FOOTER -->
+  <!-- ✅ PREVIEW -->
+  <div id="preview"></div>
+
+  <!-- ✅ FOOTER -->
   <div class="footer">
-    <div id="timer">00:00</div>
-    <div id="stats">0 characters, 0 words</div>
+    <span id="stats">0 words</span>
+    <span id="historyInfo">History saved ✅</span>
   </div>
 
+  <!-- ✅ JS -->
   <script src="script.js"></script>
 </body>
 </html>
