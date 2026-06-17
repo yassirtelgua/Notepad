@@ -3,92 +3,45 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-
   <title>Notepad Pro</title>
 
-  <!-- CSS -->
   <link rel="stylesheet" href="style.css" />
-
-  <!-- Fonts -->
-  https://fonts.googleapis.com
-  https://fonts.gstatic.com
-  https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&family=JetBrains+Mono:wght@500;700;800&display=swap
-
-  <!-- Icons -->
-  https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css
-
-  <!-- JavaScript -->
   <script src="script.js" defer></script>
 </head>
 
 <body>
 
-  <!-- Top toolbar -->
   <header class="app-toolbar">
     <div class="toolbar-left">
-      <button class="icon-btn brand-btn" id="appMenuBtn" title="Menu">
+      <button class="brand-btn" id="menuBtn" title="Menu">
         <span class="brand-title">Notepad</span>
-        <i class="fa-solid fa-chevron-down"></i>
+        <span class="arrow">⌄</span>
       </button>
 
-      <button class="icon-btn" id="clearBtn" title="Clear note">
-        <i class="fa-regular fa-trash-can"></i>
-      </button>
-
-      <button class="icon-btn" id="exportBtn" title="Download note">
-        <i class="fa-solid fa-arrow-down-to-bracket"></i>
-      </button>
-
-      <button class="icon-btn" id="copyBtn" title="Copy note">
-        <i class="fa-regular fa-copy"></i>
-      </button>
-
-      <button class="icon-btn" id="historyBtn" title="Save history">
-        <i class="fa-solid fa-clock-rotate-left"></i>
-      </button>
-
-      <button class="icon-btn" id="themeBtn" title="Theme">
-        <i class="fa-regular fa-moon"></i>
-      </button>
-
-      <button class="icon-btn" id="timerToggleBtn" title="Start / stop timer">
-        <i class="fa-regular fa-clock"></i>
-      </button>
-
-      <button class="icon-btn" id="shareBtn" title="Share">
-        <i class="fa-solid fa-share-nodes"></i>
-      </button>
+      <button class="icon-btn" id="clearBtn" title="Clear">🗑</button>
+      <button class="icon-btn" id="exportBtn" title="Download">⬇</button>
+      <button class="icon-btn" id="copyBtn" title="Copy">📋</button>
+      <button class="icon-btn" id="historyBtn" title="Save history">↶</button>
+      <button class="icon-btn" id="themeBtn" title="Theme">🌙</button>
+      <button class="icon-btn" id="timerBtn" title="Start / stop timer">⏱</button>
+      <button class="icon-btn" id="shareBtn" title="Share">↗</button>
     </div>
 
     <div class="toolbar-right">
-      <button class="icon-btn" id="previewBtn" title="Preview">
-        <i class="fa-regular fa-window-restore"></i>
-      </button>
-
-      <button class="icon-btn" id="keyboardBtn" title="Keyboard">
-        <i class="fa-regular fa-keyboard"></i>
-      </button>
-
-      <button class="icon-btn" id="fullscreenBtn" title="Fullscreen">
-        <i class="fa-solid fa-expand"></i>
-      </button>
-
-      <button class="about-btn" id="aboutBtn" title="About">
-        About
-      </button>
+      <button class="icon-btn" id="previewBtn" title="Preview">▣</button>
+      <button class="icon-btn" id="fullscreenBtn" title="Fullscreen">⛶</button>
+      <button class="about-btn" id="aboutBtn">About</button>
     </div>
   </header>
 
-  <!-- Floating formatting toolbar -->
   <div class="floating-tools">
     <button class="mini-btn" id="fontDownBtn" title="Smaller text">A-</button>
     <button class="mini-btn" id="fontUpBtn" title="Bigger text">A+</button>
-    <button class="mini-btn" id="boldBtn" title="Bold">B</button>
+    <button class="mini-btn" id="boldBtn" title="Bold"><strong>B</strong></button>
     <button class="mini-btn" id="italicBtn" title="Italic"><em>I</em></button>
     <button class="mini-btn" id="headingBtn" title="Heading">H</button>
   </div>
 
-  <!-- Editor area -->
   <main class="editor-shell">
     <section class="editor-frame">
       <div
@@ -102,7 +55,6 @@
     </section>
   </main>
 
-  <!-- Bottom status pills -->
   <footer class="bottom-status">
     <span class="pill timer-pill" id="timer">00:00</span>
     <span class="pill stats-pill" id="stats">0 characters, 0 words</span>
