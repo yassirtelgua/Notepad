@@ -1,20 +1,20 @@
 let notes = JSON.parse(localStorage.getItem("notes")) || [];
 let current = 0;
-let deletedNote = null;
 
 const list = document.getElementById("notesList");
 const title = document.getElementById("title");
-const textarea = document.getElementById("note");
+const note = document.getElementById("note");
 const fontSelector = document.getElementById("fontSelector");
 
-// RENDER
+// RENDER NOTES
 function renderNotes() {
   list.innerHTML = "";
-  notes.forEach((note, index) => {
+
+  notes.forEach((n, i) => {
     const li = document.createElement("li");
-    li.textContent = note.title || "Untitled";
-    if (index === current) li.classList.add("active");
-    li.onclick = () => loadNote(index);
+    li.textContent = n.title || "Untitled";
+    if (i === current) li.classList.add("active");
+    li.onclick = () => loadNote(i);
     list.appendChild(li);
   });
 }
@@ -23,70 +23,60 @@ function renderNotes() {
 function createNote() {
   notes.push({ title: "", content: "", font: "Inter" });
   current = notes.length - 1;
-  saveNotes();
+  save();
   loadNote(current);
 }
 
 // LOAD
 function loadNote(i) {
   current = i;
-  title.value = notes[i].title;
-  textarea.value = notes[i].content;
-  textarea.style.fontFamily = notes[i].font;
-  fontSelector.value = notes[i].font;
 
-  textarea.style.opacity = 0;
-  setTimeout(() => textarea.style.opacity = 1, 100);
+  title.value = notes[i].title;
+  note.value = notes[i].content;
+
+  const font = notes[i].font || "Inter";
+  note.style.fontFamily = font;
+  fontSelector.value = font;
 
   renderNotes();
 }
 
 // SAVE
-function saveNotes() {
+function save() {
   localStorage.setItem("notes", JSON.stringify(notes));
 }
 
 // AUTO SAVE
-function saveCurrent() {
+function updateNote() {
   notes[current].title = title.value;
-  notes[current].content = textarea.value;
+  notes[current].content = note.value;
   notes[current].font = fontSelector.value;
-  saveNotes();
+
+  save();
   renderNotes();
 }
 
-title.oninput = saveCurrent;
-textarea.oninput = saveCurrent;
+title.oninput = updateNote;
+note.oninput = updateNote;
 
 // DELETE
 function deleteNote() {
-  deletedNote = notes[current];
   notes.splice(current, 1);
-  current = 0;
-  saveNotes();
-  renderNotes();
-  showUndo();
-}
 
-// UNDO
-function showUndo() {
-  const div = document.createElement("div");
-  div.className = "undo-popup";
-  div.textContent = "Note deleted — click to undo";
-  div.onclick = () => {
-    notes.push(deletedNote);
-    saveNotes();
-    renderNotes();
-    div.remove();
-  };
-  document.body.appendChild(div);
-  setTimeout(() => div.remove(), 5000);
+  if (notes.length === 0) {
+    createNote();
+  } else {
+    current = Math.max(0, current - 1);
+    loadNote(current);
+  }
+
+  save();
 }
 
 // FONT
 function changeNoteFont() {
-  textarea.style.fontFamily = fontSelector.value;
-  saveCurrent();
+  note.style.fontFamily = fontSelector.value;
+  updateNote();
 }
 
 // THEME
@@ -96,43 +86,44 @@ function toggleTheme() {
 
 // EXPORT
 function exportNotes() {
-  const blob = new Blob([JSON.stringify(notes)], {type:"application/json"});
+  const blob = new Blob([JSON.stringify(notes)], { type: "application/json" });
   const a = document.createElement("a");
   a.href = URL.createObjectURL(blob);
   a.download = "notes.json";
   a.click();
 }
 
-// FLOATING WINDOW
-const floatBtn = document.getElementById("floatingBtn");
-const floatWin = document.getElementById("floatingWindow");
+// FLOAT WINDOW
+const btn = document.getElementById("floatingBtn");
+const win = document.getElementById("floatingWindow");
 const floatNote = document.getElementById("floatingNote");
 
-floatBtn.onclick = () => {
-  floatWin.style.display = floatWin.style.display === "flex" ? "none" : "flex";
+btn.onclick = () => {
+  win.style.display = win.style.display === "block" ? "none" : "block";
 };
 
+// SAVE FLOAT NOTE
 floatNote.value = localStorage.getItem("floatingNote") || "";
 floatNote.oninput = () => {
   localStorage.setItem("floatingNote", floatNote.value);
 };
 
 // DRAG
-const header = document.getElementById("floatingHeader");
-let drag = false, offX, offY;
+let drag = false, offsetX, offsetY;
 
-header.onmousedown = e => {
+document.getElementById("floatingHeader").onmousedown = e => {
   drag = true;
-  offX = e.clientX - floatWin.offsetLeft;
-  offY = e.clientY - floatWin.offsetTop;
+  offsetX = e.clientX - win.offsetLeft;
+  offsetY = e.clientY - win.offsetTop;
 };
 
 document.onmouseup = () => drag = false;
 
 document.onmousemove = e => {
   if (!drag) return;
-  floatWin.style.left = e.clientX - offX + "px";
-  floatWin.style.top = e.clientY - offY + "px";
+
+  win.style.left = e.clientX - offsetX + "px";
+  win.style.top = e.clientY - offsetY + "px";
 };
 
 // INIT
