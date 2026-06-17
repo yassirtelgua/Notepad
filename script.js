@@ -1,22 +1,4 @@
-document.addEventListener("DOMContentLoaded", () => {
-  const note = document.getElementById("note");  const note = document.getElementById("note");
-  const timerDisplay = document.getElementById("timer");
-  const stats = document.getElementById("stats");
-
-  const clearBtn = document.getElementById("clearBtn");
-  const exportBtn = document.getElementById("exportBtn");
-  const copyBtn = document.getElementById("copyBtn");
-  const historyBtn = document.getElementById("historyBtn");
-  const themeBtn = document.getElementById("themeBtn");
-  const timerToggleBtn = document.getElementById("timerToggleBtn");
-  const shareBtn = document.getElementById("shareBtn");
-  const previewBtn = document.getElementById("previewBtn");
-  const fullscreenBtn = document.getElementById("fullscreenBtn");
-
-  const fontDownBtn = document.getElementById("fontDownBtn");
-  const fontUpBtn = document.getElementById("fontUpBtn");
-  const boldBtn = document.getElementById("boldBtn");
-  const italicBtn = document.getElementById("italicBtn");
+document.addEventListener("DOMContentLoaded", () => {document.addEventListener("DOMContentLoaded", ()ById("italicBtn");
   const headingBtn = document.getElementById("headingBtn");
 
   let fontSize = Number(localStorage.getItem("fontSize")) || 31;
@@ -25,7 +7,7 @@ document.addEventListener("DOMContentLoaded", () => {
   let timerRunning = false;
   let timerInterval = null;
 
-  // Initial load
+  /* INITIAL LOAD */
   note.value = localStorage.getItem("notepadText") || "";
   note.style.fontSize = fontSize + "px";
   preview.style.fontSize = fontSize + "px";
@@ -34,7 +16,7 @@ document.addEventListener("DOMContentLoaded", () => {
   updateStats();
   updateTimerDisplay();
 
-  // Autosave
+  /* AUTOSAVE */
   note.addEventListener("input", () => {
     localStorage.setItem("notepadText", note.value);
     updateStats();
@@ -44,7 +26,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 
-  // Stats
+  /* STATS */
   function updateStats() {
     const text = note.value;
     const characters = text.length;
@@ -53,7 +35,7 @@ document.addEventListener("DOMContentLoaded", () => {
     stats.textContent = `${characters} characters, ${words} words`;
   }
 
-  // Font size
+  /* FONT SIZE */
   function changeFontSize(amount) {
     fontSize += amount;
 
@@ -66,7 +48,7 @@ document.addEventListener("DOMContentLoaded", () => {
     localStorage.setItem("fontSize", fontSize);
   }
 
-  // Markdown preview
+  /* MARKDOWN PREVIEW */
   function parseMarkdown(text) {
     return text
       .replace(/^### (.*$)/gim, "<h3>$1</h3>")
@@ -91,7 +73,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }
 
-  // Format text
+  /* FORMAT TEXT */
   function formatText(type) {
     note.focus();
 
@@ -119,7 +101,7 @@ document.addEventListener("DOMContentLoaded", () => {
     updateStats();
   }
 
-  // Clear
+  /* CLEAR */
   function clearNote() {
     const confirmClear = confirm("Clear this note?");
     if (!confirmClear) return;
@@ -130,7 +112,7 @@ document.addEventListener("DOMContentLoaded", () => {
     note.focus();
   }
 
-  // Export
+  /* EXPORT */
   function exportNote() {
     const blob = new Blob([note.value], { type: "text/plain" });
     const url = URL.createObjectURL(blob);
@@ -143,7 +125,7 @@ document.addEventListener("DOMContentLoaded", () => {
     URL.revokeObjectURL(url);
   }
 
-  // Copy
+  /* COPY */
   async function copyNote() {
     try {
       await navigator.clipboard.writeText(note.value);
@@ -153,7 +135,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }
 
-  // History
+  /* HISTORY */
   function saveHistory() {
     const history = JSON.parse(localStorage.getItem("noteHistory")) || [];
 
@@ -170,7 +152,7 @@ document.addEventListener("DOMContentLoaded", () => {
     alert("History saved ✅");
   }
 
-  // Timer
+  /* TIMER */
   function updateTimerDisplay() {
     const minutes = Math.floor(seconds / 60);
     const remainingSeconds = seconds % 60;
@@ -193,7 +175,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }
 
-  // Theme
+  /* THEME */
   function applySystemTheme() {
     const prefersLight = window.matchMedia("(prefers-color-scheme: light)").matches;
 
@@ -208,7 +190,7 @@ document.addEventListener("DOMContentLoaded", () => {
     document.body.classList.toggle("light");
   }
 
-  // Fullscreen
+  /* FULLSCREEN */
   function toggleFullscreen() {
     if (!document.fullscreenElement) {
       document.documentElement.requestFullscreen();
@@ -217,7 +199,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }
 
-  // Share
+  /* SHARE */
   async function shareNote() {
     if (navigator.share) {
       try {
@@ -233,7 +215,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }
 
-  // Button events
+  /* BUTTON EVENTS */
   clearBtn.addEventListener("click", clearNote);
   exportBtn.addEventListener("click", exportNote);
   copyBtn.addEventListener("click", copyNote);
@@ -254,3 +236,21 @@ document.addEventListener("DOMContentLoaded", () => {
     .matchMedia("(prefers-color-scheme: light)")
     .addEventListener("change", applySystemTheme);
 });
+  const note = document.getElementById("note");
+  const preview = document.getElementById("preview");
+  const timerDisplay = document.getElementById("timer");
+  const stats = document.getElementById("stats");
+
+  const clearBtn = document.getElementById("clearBtn");
+  const exportBtn = document.getElementById("exportBtn");
+  const copyBtn = document.getElementById("copyBtn");
+  const historyBtn = document.getElementById("historyBtn");
+  const themeBtn = document.getElementById("themeBtn");
+  const timerToggleBtn = document.getElementById("timerToggleBtn");
+  const shareBtn = document.getElementById("shareBtn");
+  const previewBtn = document.getElementById("previewBtn");
+  const fullscreenBtn = document.getElementById("fullscreenBtn");
+
+  const fontDownBtn = document.getElementById("fontDownBtn");
+  const fontUpBtn = document.getElementById("fontUpBtn");
+  const boldBtn = document.getElementById("boldBtn");
