@@ -2,28 +2,20 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>Yassir Notepad Pro</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Notepad Pro</title>
 
-  <!-- ✅ CSS -->
-  style.css
+  <!-- ✅ CSS LINK (IMPORTANT) -->
+  <link rel="stylesheet" href="style.css">
 
-  <!-- ✅ Google Fonts -->
-  https://fonts.googleapis.com/css2?family=Inter&family=Roboto&family=Playfair+Display&display=swap
+  <!-- ✅ GOOGLE FONT -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter&display=swap" rel="stylesheet">
 </head>
 
 <body>
 
   <div class="container">
     <h1>📝 Notepad Pro</h1>
-
-    <div class="top-bar">
-      <input type="text" id="search" placeholder="Search notes...">
-
-      <div class="actions">
-        <button onclick="toggleTheme()">🌙/☀️</button>
-        <button onclick="exportNotes()">📁</button>
-      </div>
-    </div>
 
     <div class="main">
 
@@ -35,28 +27,35 @@
 
       <!-- Editor -->
       <div class="editor">
-        <input id="title" placeholder="Note title...">
+        <input id="title" placeholder="Note title..." />
 
         <select id="fontSelector" onchange="changeNoteFont()">
           <option value="Inter">Inter</option>
-          <option value="Roboto">Roboto</option>
-          <option value="Playfair Display">Playfair</option>
+          <option value="Arial">Arial</option>
+          <option value="Courier New">Mono</option>
         </select>
 
         <textarea id="note" placeholder="Start typing..."></textarea>
 
         <div class="bottom">
-          <span id="saveStatus">Saved ✅</span>
-          <span id="wordCount">0 words</span>
-          <button onclick="deleteNote()">🗑️</button>
+          <button onclick="deleteNote()">Delete</button>
         </div>
       </div>
 
     </div>
   </div>
 
-  <!-- ✅ JS -->
-  script.js
+  <!-- ✅ FLOAT BUTTON -->
+  <button id="floatBtn">+</button>
+
+  <!-- ✅ FLOAT WINDOW -->
+  <div id="floatWindow">
+    <div id="floatHeader">Quick Note</div>
+    <textarea id="floatNote" placeholder="Quick note..."></textarea>
+  </div>
+
+  <!-- ✅ JS SCRIPT (IMPORTANT) -->
+  <script src="script.js"></script>
 
 </body>
 </html>
