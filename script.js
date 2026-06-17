@@ -1,7 +1,5 @@
 document.addEventListener("DOMContentLoaded", () => {
-  const note = document.getElementById("note");
-  const preview = document.getElementById("preview");
-  const timerDisplay = document.getElementById("timer");
+  const note = document.getElementElementById("timer");  const note = document.getElementById("note");
   const stats = document.getElementById("stats");
   const toastContainer = document.getElementById("toastContainer");
 
@@ -29,7 +27,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const historyList = document.getElementById("historyList");
 
   let fontSize = Number(localStorage.getItem("fontSize")) || 31;
-  let previewMode = false;
+  let readMode = false;
   let seconds = Number(localStorage.getItem("timerSeconds")) || 0;
   let timerRunning = false;
   let timerInterval = null;
@@ -67,7 +65,7 @@ document.addEventListener("DOMContentLoaded", () => {
     saveNote();
     updateStats();
 
-    if (previewMode) {
+    if (readMode) {
       preview.innerHTML = note.innerHTML;
     }
   });
@@ -114,18 +112,29 @@ document.addEventListener("DOMContentLoaded", () => {
     updateStats();
   }
 
-  function togglePreview() {
-    previewMode = !previewMode;
+  function toggleReadMode() {
+    readMode = !readMode;
 
-    if (previewMode) {
+    if (readMode) {
+      saveNote();
       preview.innerHTML = note.innerHTML;
+
       preview.style.display = "block";
       note.style.display = "none";
+
+      document.body.classList.add("read-mode");
+      previewBtn.classList.add("active");
+
       showToast("Read mode enabled", "info");
     } else {
       preview.style.display = "none";
       note.style.display = "block";
+
+      document.body.classList.remove("read-mode");
+      previewBtn.classList.remove("active");
+
       note.focus();
+
       showToast("Edit mode enabled", "info");
     }
   }
@@ -137,6 +146,10 @@ document.addEventListener("DOMContentLoaded", () => {
     note.innerHTML = "";
     localStorage.removeItem("notepadHTML");
     localStorage.removeItem("notepadText");
+
+    if (readMode) {
+      preview.innerHTML = "";
+    }
 
     updateStats();
     note.focus();
@@ -276,7 +289,7 @@ document.addEventListener("DOMContentLoaded", () => {
     saveNote();
     updateStats();
 
-    if (previewMode) {
+    if (readMode) {
       preview.innerHTML = note.innerHTML;
     }
 
@@ -374,6 +387,7 @@ document.addEventListener("DOMContentLoaded", () => {
     showToast("Notepad Pro — rich-text notepad with autosave and version history.", "info");
   }
 
+  /* BUTTON EVENTS */
   clearBtn.addEventListener("click", clearNote);
   exportBtn.addEventListener("click", exportNote);
   copyBtn.addEventListener("click", copyNote);
@@ -381,7 +395,7 @@ document.addEventListener("DOMContentLoaded", () => {
   themeBtn.addEventListener("click", toggleTheme);
   timerBtn.addEventListener("click", toggleTimer);
   shareBtn.addEventListener("click", shareNote);
-  previewBtn.addEventListener("click", togglePreview);
+  previewBtn.addEventListener("click", toggleReadMode);
   fullscreenBtn.addEventListener("click", toggleFullscreen);
   aboutBtn.addEventListener("click", showAbout);
 
@@ -403,7 +417,51 @@ document.addEventListener("DOMContentLoaded", () => {
   historyOverlay.addEventListener("click", closeHistoryPanel);
   saveVersionBtn.addEventListener("click", saveCurrentVersion);
 
+  /* KEYBOARD SHORTCUTS */
+  document.addEventListener("keydown", (event) => {
+    const key = event.key.toLowerCase();
+
+    if (event.ctrlKey && key === "b") {
+      event.preventDefault();
+      formatText("bold");
+    }
+
+    if (event.ctrlKey && key === "i") {
+      event.preventDefault();
+      formatText("italic");
+    }
+
+    if (event.ctrlKey && key === "s") {
+      event.preventDefault();
+      saveCurrentVersion();
+    }
+
+    if (event.ctrlKey && key === "d") {
+      event.preventDefault();
+      exportNote();
+    }
+
+    if (event.ctrlKey && event.shiftKey && key === "l") {
+      event.preventDefault();
+      toggleTheme();
+    }
+
+    if (event.ctrlKey && event.key === "Enter") {
+      event.preventDefault();
+      toggleReadMode();
+    }
+
+    if (event.key === "Escape") {
+      if (historyPanel.classList.contains("show")) {
+        closeHistoryPanel();
+      } else if (readMode) {
+        toggleReadMode();
+      }
+    }
+  });
+
   window
     .matchMedia("(prefers-color-scheme: light)")
     .addEventListener("change", applySystemTheme);
 });
+  const preview = document.getElementById("preview");
