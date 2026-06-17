@@ -1,5 +1,10 @@
 document.addEventListener("DOMContentLoaded", () => {
-  const note = document.getElement stats = document.getElementById("stats");  const note = document.getElementById("note");
+  console.log("Notepad script loaded ✅");
+
+  const note = document.getElementById("note");
+  const preview = document.getElementById("preview");
+  const timerDisplay = document.getElementById("timer");
+  const stats = document.getElementById("stats");
   const toastContainer = document.getElementById("toastContainer");
 
   const clearBtn = document.getElementById("clearBtn");
@@ -7,7 +12,12 @@ document.addEventListener("DOMContentLoaded", () => {
   const copyBtn = document.getElementById("copyBtn");
   const historyBtn = document.getElementById("historyBtn");
   const themeBtn = document.getElementById("themeBtn");
-  const timerBtn = document.getElementById("timerBtn");
+
+  /* Supports both old and new timer ID */
+  const timerBtn =
+    document.getElementById("timerBtn") ||
+    document.getElementById("timerToggleBtn");
+
   const shareBtn = document.getElementById("shareBtn");
   const previewBtn = document.getElementById("previewBtn");
   const fullscreenBtn = document.getElementById("fullscreenBtn");
@@ -25,6 +35,11 @@ document.addEventListener("DOMContentLoaded", () => {
   const saveVersionBtn = document.getElementById("saveVersionBtn");
   const historyList = document.getElementById("historyList");
 
+  if (!note) {
+    console.error("Missing #note element. Check index.html.");
+    return;
+  }
+
   let fontSize = Number(localStorage.getItem("fontSize")) || 31;
   let readMode = false;
   let seconds = Number(localStorage.getItem("timerSeconds")) || 0;
@@ -33,14 +48,20 @@ document.addEventListener("DOMContentLoaded", () => {
 
   note.innerHTML = localStorage.getItem("notepadHTML") || "";
   note.style.fontSize = fontSize + "px";
-  preview.style.fontSize = fontSize + "px";
+
+  if (preview) {
+    preview.style.fontSize = fontSize + "px";
+  }
 
   applySystemTheme();
   updateStats();
   updateTimerDisplay();
 
   function showToast(message, type = "info") {
-    if (!toastContainer) return;
+    if (!toastContainer) {
+      console.log(message);
+      return;
+    }
 
     const toast = document.createElement("div");
     toast.className = `toast ${type}`;
@@ -66,12 +87,14 @@ document.addEventListener("DOMContentLoaded", () => {
     saveNote();
     updateStats();
 
-    if (readMode) {
+    if (readMode && preview) {
       preview.innerHTML = note.innerHTML;
     }
   });
 
   function updateStats() {
+    if (!stats) return;
+
     const text = note.innerText || "";
     const characters = text.length;
     const words = text.trim().split(/\s+/).filter(Boolean).length;
@@ -86,15 +109,12 @@ document.addEventListener("DOMContentLoaded", () => {
     if (fontSize > 56) fontSize = 56;
 
     note.style.fontSize = fontSize + "px";
-    preview.style.fontSize = fontSize + "px";
+
+    if (preview) {
+      preview.style.fontSize = fontSize + "px";
+    }
 
     localStorage.setItem("fontSize", fontSize);
-  }
-
-  function focusEditor() {
-    if (!readMode) {
-      note.focus();
-    }
   }
 
   function formatText(type) {
@@ -103,7 +123,7 @@ document.addEventListener("DOMContentLoaded", () => {
       return;
     }
 
-    focusEditor();
+    note.focus();
 
     if (type === "bold") {
       document.execCommand("bold", false, null);
@@ -125,17 +145,22 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   function toggleReadMode() {
+    if (!preview) return;
+
     readMode = !readMode;
 
     if (readMode) {
       saveNote();
-      preview.innerHTML = note.innerHTML;
 
+      preview.innerHTML = note.innerHTML;
       preview.style.display = "block";
       note.style.display = "none";
 
       document.body.classList.add("read-mode");
-      previewBtn.classList.add("active");
+
+      if (previewBtn) {
+        previewBtn.classList.add("active");
+      }
 
       showToast("Read mode enabled", "info");
     } else {
@@ -143,10 +168,12 @@ document.addEventListener("DOMContentLoaded", () => {
       note.style.display = "block";
 
       document.body.classList.remove("read-mode");
-      previewBtn.classList.remove("active");
+
+      if (previewBtn) {
+        previewBtn.classList.remove("active");
+      }
 
       note.focus();
-
       showToast("Edit mode enabled", "info");
     }
   }
@@ -159,7 +186,7 @@ document.addEventListener("DOMContentLoaded", () => {
     localStorage.removeItem("notepadHTML");
     localStorage.removeItem("notepadText");
 
-    if (readMode) {
+    if (readMode && preview) {
       preview.innerHTML = "";
     }
 
@@ -201,12 +228,16 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   function openHistoryPanel() {
+    if (!historyPanel || !historyOverlay || !historyList) return;
+
     renderHistoryList();
     historyPanel.classList.add("show");
     historyOverlay.classList.add("show");
   }
 
   function closeHistoryPanel() {
+    if (!historyPanel || !historyOverlay) return;
+
     historyPanel.classList.remove("show");
     historyOverlay.classList.remove("show");
   }
@@ -232,12 +263,17 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     setHistory(history);
-    renderHistoryList();
+
+    if (historyList) {
+      renderHistoryList();
+    }
 
     showToast("Version saved ✅", "success");
   }
 
   function renderHistoryList() {
+    if (!historyList) return;
+
     const history = getHistory();
 
     historyList.innerHTML = "";
@@ -301,7 +337,7 @@ document.addEventListener("DOMContentLoaded", () => {
     saveNote();
     updateStats();
 
-    if (readMode) {
+    if (readMode && preview) {
       preview.innerHTML = note.innerHTML;
     }
 
@@ -331,6 +367,8 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   function updateTimerDisplay() {
+    if (!timerDisplay) return;
+
     const minutes = Math.floor(seconds / 60);
     const remainingSeconds = seconds % 60;
 
@@ -400,12 +438,11 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   function safeClick(element, callback) {
-    if (element) {
-      element.addEventListener("click", callback);
-    }
+    if (!element) return;
+    element.addEventListener("click", callback);
   }
 
-  /* BUTTON EVENTS */
+  /* Button events */
   safeClick(clearBtn, clearNote);
   safeClick(exportBtn, exportNote);
   safeClick(copyBtn, copyNote);
@@ -435,14 +472,12 @@ document.addEventListener("DOMContentLoaded", () => {
   safeClick(historyOverlay, closeHistoryPanel);
   safeClick(saveVersionBtn, saveCurrentVersion);
 
-  /* FIXED KEYBOARD SHORTCUTS */
+  /* Keyboard shortcuts */
   document.addEventListener(
     "keydown",
     (event) => {
       const key = event.key.toLowerCase();
       const shortcut = event.ctrlKey || event.metaKey;
-
-      if (!shortcut && event.key !== "Escape") return;
 
       if (shortcut && key === "b") {
         event.preventDefault();
@@ -489,7 +524,7 @@ document.addEventListener("DOMContentLoaded", () => {
       if (event.key === "Escape") {
         event.preventDefault();
 
-        if (historyPanel.classList.contains("show")) {
+        if (historyPanel && historyPanel.classList.contains("show")) {
           closeHistoryPanel();
           return;
         }
@@ -507,5 +542,3 @@ document.addEventListener("DOMContentLoaded", () => {
     .matchMedia("(prefers-color-scheme: light)")
     .addEventListener("change", applySystemTheme);
 });
-  const preview = document.getElementById("preview");
-  const timerDisplay = document.getElementById("timer");
