@@ -7,9 +7,12 @@
   --brand: #72b7ff;
   --pill-blue: #bdf1ff;
   --pill-purple: #e9d0ff;
+  --panel: #111827;
+  --panel-soft: #1f2937;
+  --danger: #ef4444;
+  --success: #22c55e;
 }
 
-/* LIGHT MODE */
 .light {
   --bg: #f8fafc;
   --toolbar: #ffffff;
@@ -19,9 +22,12 @@
   --brand: #2563eb;
   --pill-blue: #dbeafe;
   --pill-purple: #ede9fe;
+  --panel: #ffffff;
+  --panel-soft: #f1f5f9;
+  --danger: #dc2626;
+  --success: #16a34a;
 }
 
-/* GLOBAL RESET */
 * {
   box-sizing: border-box;
 }
@@ -57,12 +63,11 @@ body {
   gap: 18px;
 }
 
-/* GENERAL BUTTON RESET */
+/* BUTTONS */
 button {
   font-family: inherit;
 }
 
-/* MAIN TOOLBAR BUTTONS */
 .icon-btn,
 .brand-btn,
 .about-btn {
@@ -74,7 +79,7 @@ button {
   transition: 0.18s ease;
 }
 
-/* PROFESSIONAL SVG ICONS */
+/* SVG ICONS */
 .icon {
   width: 27px;
   height: 27px;
@@ -90,7 +95,6 @@ button {
   height: 18px;
 }
 
-/* ICON BUTTON STYLE */
 .icon-btn {
   width: 38px;
   height: 38px;
@@ -114,7 +118,6 @@ button {
   transform: scale(0.94);
 }
 
-/* BRAND BUTTON */
 .brand-btn {
   height: 40px;
   display: flex;
@@ -131,7 +134,6 @@ button {
   text-shadow: 0 0 10px rgba(114, 183, 255, 0.85);
 }
 
-/* ABOUT BUTTON */
 .about-btn {
   color: var(--muted);
   font-size: 22px;
@@ -175,7 +177,7 @@ button {
   background: rgba(255, 255, 255, 0.12);
 }
 
-/* EDITOR AREA */
+/* EDITOR */
 .editor-shell {
   height: calc(100vh - 78px);
   background: var(--bg);
@@ -191,7 +193,6 @@ button {
   position: relative;
 }
 
-/* RICH TEXT EDITOR */
 #note,
 #preview {
   width: 100%;
@@ -208,14 +209,12 @@ button {
   overflow-y: auto;
 }
 
-/* PLACEHOLDER FOR CONTENTEDITABLE */
 #note:empty::before {
   content: attr(data-placeholder);
   color: rgba(229, 231, 235, 0.35);
   pointer-events: none;
 }
 
-/* HEADINGS INSIDE EDITOR */
 #note h1,
 #preview h1 {
   font-size: 1.8em;
@@ -223,12 +222,11 @@ button {
   margin: 0.6em 0;
 }
 
-/* PREVIEW */
 #preview {
   display: none;
 }
 
-/* BOTTOM STATUS PILLS */
+/* BOTTOM STATUS */
 .bottom-status {
   position: fixed;
   right: 7.5%;
@@ -255,7 +253,147 @@ button {
   background: var(--pill-purple);
 }
 
-/* MOBILE RESPONSIVE */
+/* HISTORY PANEL */
+.history-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.45);
+  z-index: 80;
+  display: none;
+}
+
+.history-overlay.show {
+  display: block;
+}
+
+.history-panel {
+  position: fixed;
+  top: 0;
+  right: -420px;
+  width: 400px;
+  max-width: 92%;
+  height: 100vh;
+  background: var(--panel);
+  color: var(--text);
+  border-left: 1px solid var(--border);
+  z-index: 90;
+  padding: 22px;
+  transition: right 0.25s ease;
+  box-shadow: -20px 0 50px rgba(0, 0, 0, 0.35);
+  overflow-y: auto;
+}
+
+.history-panel.show {
+  right: 0;
+}
+
+.history-header {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  align-items: flex-start;
+  margin-bottom: 18px;
+}
+
+.history-header h2 {
+  margin: 0 0 6px;
+  font-size: 22px;
+}
+
+.history-header p {
+  margin: 0;
+  color: var(--muted);
+  font-size: 14px;
+}
+
+.history-close-btn {
+  background: transparent;
+  border: none;
+  color: var(--text);
+  font-size: 30px;
+  cursor: pointer;
+  line-height: 1;
+  border-radius: 8px;
+  padding: 2px 8px;
+}
+
+.history-close-btn:hover {
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.save-version-btn {
+  width: 100%;
+  border: none;
+  background: var(--brand);
+  color: white;
+  padding: 13px 16px;
+  border-radius: 12px;
+  cursor: pointer;
+  font-weight: 800;
+  margin-bottom: 18px;
+}
+
+.history-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.history-empty {
+  color: var(--muted);
+  background: var(--panel-soft);
+  padding: 14px;
+  border-radius: 12px;
+  font-size: 14px;
+}
+
+.history-item {
+  background: var(--panel-soft);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 14px;
+}
+
+.history-date {
+  font-size: 13px;
+  color: var(--muted);
+  margin-bottom: 8px;
+}
+
+.history-preview {
+  font-size: 14px;
+  line-height: 1.4;
+  max-height: 60px;
+  overflow: hidden;
+  color: var(--text);
+  margin-bottom: 12px;
+}
+
+.history-actions {
+  display: flex;
+  gap: 8px;
+}
+
+.restore-version-btn,
+.delete-version-btn {
+  border: none;
+  border-radius: 9px;
+  padding: 8px 11px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.restore-version-btn {
+  background: var(--success);
+  color: white;
+}
+
+.delete-version-btn {
+  background: var(--danger);
+  color: white;
+}
+
+/* MOBILE */
 @media (max-width: 900px) {
   .app-toolbar {
     padding: 12px;
@@ -316,5 +454,11 @@ button {
   .pill {
     font-size: 12px;
     padding: 9px 12px;
+  }
+
+  .history-panel {
+    width: 100%;
+    max-width: 100%;
+    right: -100%;
   }
 }
