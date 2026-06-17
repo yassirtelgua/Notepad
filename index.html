@@ -3,23 +3,24 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Yassir Notepad Pro</title>
 
-  <!-- ✅ CSS -->
-  style.css
+  <title>Notepad Pro</title>
 
-  <!-- ✅ Google Fonts -->
-  https://fonts.googleapis.com/css2?family=Inter&family=Roboto&family=Playfair+Display&display=swap
+  <!-- ✅ CORRECT CSS LINK -->
+  <link rel="stylesheet" href="style.css">
+
+  <!-- ✅ CORRECT GOOGLE FONT -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter&display=swap" rel="stylesheet">
 </head>
 
 <body>
 
   <div class="container">
+
     <h1>📝 Notepad Pro</h1>
 
     <div class="top-bar">
       <input type="text" id="search" placeholder="Search notes...">
-
       <div class="actions">
         <button onclick="toggleTheme()">🌙</button>
         <button onclick="exportNotes()">📁</button>
@@ -38,15 +39,14 @@
 
         <select id="fontSelector" onchange="changeNoteFont()">
           <option value="Inter">Inter</option>
-          <option value="Roboto">Roboto</option>
-          <option value="Playfair Display">Playfair</option>
+          <option value="Arial">Arial</option>
+          <option value="Courier New">Mono</option>
         </select>
 
         <textarea id="note" placeholder="Start typing..."></textarea>
 
         <div class="bottom">
           <span id="saveStatus">Saved ✅</span>
-          <span id="wordCount">0 words</span>
           <button onclick="deleteNote()">🗑️</button>
         </div>
       </div>
@@ -54,17 +54,17 @@
     </div>
   </div>
 
-  <!-- ✅ FLOAT BUTTON -->
+  <!-- FLOAT BUTTON -->
   <button id="floatingBtn">🪟</button>
 
-  <!-- ✅ FLOAT WINDOW -->
+  <!-- FLOAT WINDOW -->
   <div id="floatingWindow">
     <div id="floatingHeader">Floating Note ✏️</div>
-    <textarea id="floatingNote" placeholder="Quick note..."></textarea>
+    <textarea id="floatingNote"></textarea>
   </div>
 
-  <!-- ✅ JS -->
-  script.js
+  <!-- ✅ CORRECT JS LINK -->
+  <script src="script.js"></script>
 
 </body>
 </html>
