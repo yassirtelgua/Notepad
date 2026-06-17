@@ -1,5 +1,7 @@
 document.addEventListener("DOMContentLoaded", () => {
-  const note = document.getElementElementById("timer");  const note = document.getElementById("note");
+  const note = document.getElementById("note");
+  const preview = document.getElementById("preview");
+  const timerDisplay = document.getElementById("timer");
   const stats = document.getElementById("stats");
   const toastContainer = document.getElementById("toastContainer");
 
@@ -387,7 +389,6 @@ document.addEventListener("DOMContentLoaded", () => {
     showToast("Notepad Pro — rich-text notepad with autosave and version history.", "info");
   }
 
-  /* BUTTON EVENTS */
   clearBtn.addEventListener("click", clearNote);
   exportBtn.addEventListener("click", exportNote);
   copyBtn.addEventListener("click", copyNote);
@@ -417,51 +418,7 @@ document.addEventListener("DOMContentLoaded", () => {
   historyOverlay.addEventListener("click", closeHistoryPanel);
   saveVersionBtn.addEventListener("click", saveCurrentVersion);
 
-  /* KEYBOARD SHORTCUTS */
-  document.addEventListener("keydown", (event) => {
-    const key = event.key.toLowerCase();
-
-    if (event.ctrlKey && key === "b") {
-      event.preventDefault();
-      formatText("bold");
-    }
-
-    if (event.ctrlKey && key === "i") {
-      event.preventDefault();
-      formatText("italic");
-    }
-
-    if (event.ctrlKey && key === "s") {
-      event.preventDefault();
-      saveCurrentVersion();
-    }
-
-    if (event.ctrlKey && key === "d") {
-      event.preventDefault();
-      exportNote();
-    }
-
-    if (event.ctrlKey && event.shiftKey && key === "l") {
-      event.preventDefault();
-      toggleTheme();
-    }
-
-    if (event.ctrlKey && event.key === "Enter") {
-      event.preventDefault();
-      toggleReadMode();
-    }
-
-    if (event.key === "Escape") {
-      if (historyPanel.classList.contains("show")) {
-        closeHistoryPanel();
-      } else if (readMode) {
-        toggleReadMode();
-      }
-    }
-  });
-
   window
     .matchMedia("(prefers-color-scheme: light)")
     .addEventListener("change", applySystemTheme);
 });
-  const preview = document.getElementById("preview");
