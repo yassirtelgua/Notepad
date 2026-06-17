@@ -1,70 +1,85 @@
-const note = document.getElementById("note");
+const note = document.getElementById("note");const note = document.get");
 const stats = document.getElementById("stats");
-const timerDisplay = document.getElementById("timer");
 
-// LOAD NOTE
+let fontSize = 18;
+let previewMode = false;
+
+// ✅ LOAD
 note.value = localStorage.getItem("note") || "";
 
-// SAVE NOTE
+// ✅ AUTO SAVE + HISTORY
 note.addEventListener("input", () => {
   localStorage.setItem("note", note.value);
+
+  // Save history (last 5 versions)
+  let history = JSON.parse(localStorage.getItem("history")) || [];
+  history.push(note.value);
+  if (history.length > 5) history.shift();
+  localStorage.setItem("history", JSON.stringify(history));
+
   updateStats();
 });
 
-// UPDATE STATS
 function updateStats() {
-  const text = note.value;
-
-  const words = text.trim().split(/\s+/).filter(w => w).length;
-  const chars = text.length;
-
-  stats.textContent = `${chars} characters, ${words} words`;
+  const words = note.value.trim().split(/\s+/).filter(w => w).length;
+  stats.textContent = words + " words";
 }
 
 updateStats();
 
-// DELETE
-function deleteNote() {
-  note.value = "";
-  localStorage.removeItem("note");
-  updateStats();
+// ✅ FONT SIZE
+function changeFontSize(change) {
+  fontSize += change;
+  note.style.fontSize = fontSize + "px";
 }
 
-// EXPORT
-function exportNotes() {
-  const blob = new Blob([note.value], { type: "text/plain" });
-  const a = document.createElement("a");
-
-  a.href = URL.createObjectURL(blob);
-  a.download = "note.txt";
-  a.click();
+// ✅ MARKDOWN SIMPLE PARSER
+function parseMarkdown(text) {
+  return text
+    .replace(/^# (.*$)/gim, "<h1>$1</h1>")
+    .replace(/\*\*(.*?)\*\*/g, "<b>$1</b>")
+    .replace(/\*(.*?)\*/g, "<i>$1</i>")
+    .replace(/\n/g, "<br>");
 }
 
-// TIMER
-let time = 0;
-let timerInterval = null;
+// ✅ PREVIEW TOGGLE
+function togglePreview() {
+  previewMode = !previewMode;
 
-function toggleTimer() {
-  if (timerInterval) {
-    clearInterval(timerInterval);
-    timerInterval = null;
+  if (previewMode) {
+    preview.innerHTML = parseMarkdown(note.value);
+    preview.style.display = "block";
+    note.style.display = "none";
   } else {
-    timerInterval = setInterval(() => {
-      time++;
-      updateTimer();
-    }, 1000);
+    preview.style.display = "none";
+    note.style.display = "block";
   }
 }
 
-function updateTimer() {
-  let min = Math.floor(time / 60);
-  let sec = time % 60;
+// ✅ FORMAT HELPERS
+function formatText(symbol) {
+  const start = note.selectionStart;
+  const end = note.selectionEnd;
 
-  timerDisplay.textContent =
-    `${String(min).padStart(2, "0")}:${String(sec).padStart(2, "0")}`;
+  const selected = note.value.slice(start, end);
+
+  const newText = symbol + selected + symbol;
+
+  note.setRangeText(newText);
 }
 
-// THEME
-function toggleTheme() {
-  document.body.classList.toggle("light");
+// ✅ CLEAR
+function clearNote() {
+  note.value = "";
+  localStorage.removeItem("note");
 }
+
+// ✅ AUTO THEME
+function autoTheme() {
+  if (window.matchMedia("(prefers-color-scheme: light)").matches) {
+    document.body.classList.add("light");
+  }
+}
+
+autoTheme();
+``
