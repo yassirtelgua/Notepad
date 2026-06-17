@@ -9,10 +9,11 @@ document.addEventListener("DOMContentLoaded", () => {
   const copyBtn = document.getElementById("copyBtn");
   const historyBtn = document.getElementById("historyBtn");
   const themeBtn = document.getElementById("themeBtn");
-  const timerToggleBtn = document.getElementById("timerToggleBtn");
+  const timerBtn = document.getElementById("timerBtn");
   const shareBtn = document.getElementById("shareBtn");
   const previewBtn = document.getElementById("previewBtn");
   const fullscreenBtn = document.getElementById("fullscreenBtn");
+  const aboutBtn = document.getElementById("aboutBtn");
 
   const fontDownBtn = document.getElementById("fontDownBtn");
   const fontUpBtn = document.getElementById("fontUpBtn");
@@ -26,7 +27,7 @@ document.addEventListener("DOMContentLoaded", () => {
   let timerRunning = false;
   let timerInterval = null;
 
-  // Load saved rich text
+  /* INITIAL LOAD */
   note.innerHTML = localStorage.getItem("notepadHTML") || "";
   note.style.fontSize = fontSize + "px";
   preview.style.fontSize = fontSize + "px";
@@ -35,7 +36,13 @@ document.addEventListener("DOMContentLoaded", () => {
   updateStats();
   updateTimerDisplay();
 
-  // Autosave rich text
+  /* SAVE NOTE */
+  function saveNote() {
+    localStorage.setItem("notepadHTML", note.innerHTML);
+    localStorage.setItem("notepadText", note.innerText);
+  }
+
+  /* AUTOSAVE */
   note.addEventListener("input", () => {
     saveNote();
     updateStats();
@@ -45,11 +52,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 
-  function saveNote() {
-    localStorage.setItem("notepadHTML", note.innerHTML);
-    localStorage.setItem("notepadText", note.innerText);
-  }
-
+  /* STATS */
   function updateStats() {
     const text = note.innerText || "";
     const characters = text.length;
@@ -58,6 +61,7 @@ document.addEventListener("DOMContentLoaded", () => {
     stats.textContent = `${characters} characters, ${words} words`;
   }
 
+  /* FONT SIZE */
   function changeFontSize(amount) {
     fontSize += amount;
 
@@ -70,6 +74,7 @@ document.addEventListener("DOMContentLoaded", () => {
     localStorage.setItem("fontSize", fontSize);
   }
 
+  /* RICH TEXT FORMATTING */
   function formatText(type) {
     note.focus();
 
@@ -89,6 +94,7 @@ document.addEventListener("DOMContentLoaded", () => {
     updateStats();
   }
 
+  /* PREVIEW */
   function togglePreview() {
     previewMode = !previewMode;
 
@@ -103,6 +109,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }
 
+  /* CLEAR */
   function clearNote() {
     const confirmClear = confirm("Clear this note?");
     if (!confirmClear) return;
@@ -114,6 +121,7 @@ document.addEventListener("DOMContentLoaded", () => {
     note.focus();
   }
 
+  /* EXPORT */
   function exportNote() {
     const blob = new Blob([note.innerText], { type: "text/plain" });
     const url = URL.createObjectURL(blob);
@@ -126,6 +134,7 @@ document.addEventListener("DOMContentLoaded", () => {
     URL.revokeObjectURL(url);
   }
 
+  /* COPY */
   async function copyNote() {
     try {
       await navigator.clipboard.writeText(note.innerText);
@@ -135,6 +144,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }
 
+  /* HISTORY */
   function saveHistory() {
     const history = JSON.parse(localStorage.getItem("noteHistory")) || [];
 
@@ -152,6 +162,7 @@ document.addEventListener("DOMContentLoaded", () => {
     alert("History saved ✅");
   }
 
+  /* TIMER */
   function updateTimerDisplay() {
     const minutes = Math.floor(seconds / 60);
     const remainingSeconds = seconds % 60;
@@ -174,6 +185,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }
 
+  /* THEME */
   function applySystemTheme() {
     const prefersLight = window.matchMedia("(prefers-color-scheme: light)").matches;
 
@@ -188,6 +200,7 @@ document.addEventListener("DOMContentLoaded", () => {
     document.body.classList.toggle("light");
   }
 
+  /* FULLSCREEN */
   function toggleFullscreen() {
     if (!document.fullscreenElement) {
       document.documentElement.requestFullscreen();
@@ -196,6 +209,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }
 
+  /* SHARE */
   async function shareNote() {
     if (navigator.share) {
       try {
@@ -211,16 +225,22 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }
 
-  // Button events
+  /* ABOUT */
+  function showAbout() {
+    alert("Notepad Pro\nA simple rich-text notepad with autosave.");
+  }
+
+  /* BUTTON EVENTS */
   clearBtn.addEventListener("click", clearNote);
   exportBtn.addEventListener("click", exportNote);
   copyBtn.addEventListener("click", copyNote);
   historyBtn.addEventListener("click", saveHistory);
   themeBtn.addEventListener("click", toggleTheme);
-  timerToggleBtn.addEventListener("click", toggleTimer);
+  timerBtn.addEventListener("click", toggleTimer);
   shareBtn.addEventListener("click", shareNote);
   previewBtn.addEventListener("click", togglePreview);
   fullscreenBtn.addEventListener("click", toggleFullscreen);
+  aboutBtn.addEventListener("click", showAbout);
 
   fontDownBtn.addEventListener("click", () => changeFontSize(-2));
   fontUpBtn.addEventListener("click", () => changeFontSize(2));
