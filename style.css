@@ -1,8 +1,6 @@
 :root {
   --bg: #071013;
-  --toolbar: #18212b;
-  --toolbar-dark: #121923;
-  --text: #e5e7eb;
+  --text: #e5e7eb;  --toolbar: #18212b;
   --muted: #a7abb4;
   --border: rgba(255, 255, 255, 0.13);
   --brand: #72b7ff;
@@ -10,6 +8,7 @@
   --pill-purple: #e9d0ff;
 }
 
+/* Light mode */
 .light {
   --bg: #f8fafc;
   --toolbar: #ffffff;
@@ -39,7 +38,7 @@ body {
   overflow: hidden;
 }
 
-/* TOOLBAR LIKE SCREENSHOT */
+/* TOP TOOLBAR */
 .app-toolbar {
   height: 78px;
   background: var(--toolbar);
@@ -57,7 +56,7 @@ body {
   gap: 18px;
 }
 
-/* ICON BUTTONS LIKE IMAGE */
+/* ICON BUTTONS */
 .icon-btn {
   background: transparent;
   border: none;
@@ -82,6 +81,11 @@ body {
   transform: scale(0.94);
 }
 
+/* BRAND */
+.brand-btn {
+  padding-left: 0;
+}
+
 .brand-title {
   color: var(--brand);
   font-size: 27px;
@@ -90,6 +94,7 @@ body {
   text-shadow: 0 0 10px rgba(114, 183, 255, 0.85);
 }
 
+/* ABOUT BUTTON */
 .about-btn {
   background: transparent;
   border: none;
@@ -177,7 +182,7 @@ body {
   display: none;
 }
 
-/* BOTTOM STATUS PILLS LIKE SCREENSHOT */
+/* BOTTOM STATUS PILLS */
 .bottom-status {
   position: fixed;
   right: 7.5%;
@@ -261,3 +266,4 @@ body {
     padding: 9px 12px;
   }
 }
+  --toolbar-dark: #121923;
