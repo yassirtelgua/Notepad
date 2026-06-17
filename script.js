@@ -1,35 +1,35 @@
 let notes = JSON.parse(localStorage.getItem("notes")) || [];
-let current = localStorage.getItem("currentNote");
-let deletedNote = null;
+let current = 0;
 
 const list = document.getElementById("notesList");
 const title = document.getElementById("title");
-const textarea = document.getElementById("note");
-const wordCount = document.getElementById("wordCount");
-const saveStatus = document.getElementById("saveStatus");
-const search = document.getElementById("search");
+const note = document.getElementById("note");
 const fontSelector = document.getElementById("fontSelector");
 
 // RENDER
-function renderNotes(filter = "") {
+function renderNotes() {
   list.innerHTML = "";
 
-  notes
-    .filter(n => (n.title || "").toLowerCase().includes(filter.toLowerCase()))
-    .forEach((note, index) => {
-      const li = document.createElement("li");
-      li.textContent = note.title || "Untitled";
+  notes.forEach((n, i) => {
+    const li = document.createElement("li");
+    li.textContent = n.title || "Untitled";
 
-      if (index == current) li.classList.add("active");
+    if (i === current) li.classList.add("active");
 
-      li.onclick = () => loadNote(index);
-      list.appendChild(li);
-    });
+    li.onclick = () => loadNote(i);
+
+    list.appendChild(li);
+  });
 }
 
 // CREATE
 function createNote() {
-  notes.push({ title: "", content: "", font: "Inter" });
+  notes.push({
+    title: "",
+    content: "",
+    font: "Inter"
+  });
+
   current = notes.length - 1;
   saveNotes();
   loadNote(current);
@@ -38,23 +38,17 @@ function createNote() {
 // LOAD
 function loadNote(index) {
   current = index;
-  localStorage.setItem("currentNote", current);
 
-  title.value = notes[index].title || "";
-  textarea.value = notes[index].content || "";
+  const n = notes[index];
 
-  const font = notes[index].font || "Inter";
-  textarea.style.fontFamily = font;
+  title.value = n.title;
+  note.value = n.content;
+
+  const font = n.font || "Inter";
+  note.style.fontFamily = font;
   fontSelector.value = font;
 
-  // ✅ Smooth animation
-  textarea.style.opacity = 0;
-  setTimeout(() => {
-    textarea.style.opacity = 1;
-  }, 120);
-
-  updateWordCount();
-  renderNotes(search.value);
+  renderNotes();
 }
 
 // SAVE
@@ -62,128 +56,88 @@ function saveNotes() {
   localStorage.setItem("notes", JSON.stringify(notes));
 }
 
-// AUTO SAVE
-function saveCurrentNote() {
-  if (current === null) return;
-
+// UPDATE
+function updateNote() {
   notes[current].title = title.value;
-  notes[current].content = textarea.value;
-  notes[current].font = textarea.style.fontFamily;
+  notes[current].content = note.value;
+  notes[current].font = fontSelector.value;
 
   saveNotes();
-
-  saveStatus.textContent = "Saving...";
-  setTimeout(() => {
-    saveStatus.textContent = "Saved ✅";
-  }, 300);
-
-  updateWordCount();
-  renderNotes(search.value);
+  renderNotes();
 }
 
-title.addEventListener("input", saveCurrentNote);
-textarea.addEventListener("input", saveCurrentNote);
+title.addEventListener("input", updateNote);
+note.addEventListener("input", updateNote);
 
-// DELETE + UNDO
+// DELETE
 function deleteNote() {
-  if (current === null) return;
-
-  deletedNote = notes[current];
   notes.splice(current, 1);
 
   if (notes.length === 0) {
-    current = null;
-    title.value = "";
-    textarea.value = "";
+    createNote();
   } else {
-    current = 0;
+    current = Math.max(0, current - 1);
     loadNote(current);
   }
 
   saveNotes();
-  renderNotes();
-  showUndo();
-}
-
-// UNDO
-function undoDelete() {
-  if (!deletedNote) return;
-
-  notes.push(deletedNote);
-  deletedNote = null;
-
-  saveNotes();
-  renderNotes();
-}
-
-// POPUP
-function showUndo() {
-  const undo = document.createElement("div");
-  undo.className = "undo-popup";
-  undo.textContent = "Note deleted ❌ — Click to undo";
-
-  undo.onclick = () => {
-    undoDelete();
-    document.body.removeChild(undo);
-  };
-
-  document.body.appendChild(undo);
-
-  setTimeout(() => {
-    if (document.body.contains(undo)) {
-      document.body.removeChild(undo);
-    }
-  }, 5000);
-}
-
-// WORD COUNT
-function updateWordCount() {
-  const words = textarea.value.trim().split(/\s+/).filter(w => w.length > 0);
-  wordCount.textContent = words.length + " words";
-}
-
-// SEARCH
-search.addEventListener("input", () => {
-  renderNotes(search.value);
-});
-
-// THEME
-function toggleTheme() {
-  document.body.classList.toggle("light");
-  localStorage.setItem("theme", document.body.classList.contains("light"));
-}
-
-// EXPORT
-function exportNotes() {
-  const blob = new Blob([JSON.stringify(notes, null, 2)], { type: "application/json" });
-  const a = document.createElement("a");
-
-  a.href = URL.createObjectURL(blob);
-  a.download = "notes.json";
-  a.click();
 }
 
 // FONT
 function changeNoteFont() {
-  const font = fontSelector.value;
-  textarea.style.fontFamily = font;
-
-  if (current !== null) {
-    notes[current].font = font;
-    saveNotes();
-  }
+  note.style.fontFamily = fontSelector.value;
+  updateNote();
 }
+
+/* ✅ FLOAT FEATURE */
+
+// Elements
+const floatBtn = document.getElementById("floatBtn");
+const floatWindow = document.getElementById("floatWindow");
+const floatNote = document.getElementById("floatNote");
+
+// Toggle window
+floatBtn.onclick = () => {
+  floatWindow.style.display =
+    floatWindow.style.display === "flex" ? "none" : "flex";
+};
+
+// Save floating note
+floatNote.value = localStorage.getItem("floatingNote") || "";
+
+floatNote.addEventListener("input", () => {
+  localStorage.setItem("floatingNote", floatNote.value);
+});
+
+// DRAGGING
+const header = document.getElementById("floatHeader");
+
+let isDragging = false;
+let offsetX = 0;
+let offsetY = 0;
+
+header.addEventListener("mousedown", (e) => {
+  isDragging = true;
+  offsetX = e.clientX - floatWindow.offsetLeft;
+  offsetY = e.clientY - floatWindow.offsetTop;
+});
+
+document.addEventListener("mouseup", () => {
+  isDragging = false;
+});
+
+document.addEventListener("mousemove", (e) => {
+  if (!isDragging) return;
+
+  floatWindow.style.left = e.clientX - offsetX + "px";
+  floatWindow.style.top = e.clientY - offsetY + "px";
+});
 
 // INIT
 window.onload = () => {
-  const theme = localStorage.getItem("theme");
-  if (theme === "true") document.body.classList.add("light");
-
-  renderNotes();
-
   if (notes.length === 0) {
     createNote();
-  } else if (current !== null) {
-    loadNote(current);
+  } else {
+    loadNote(0);
   }
 };
