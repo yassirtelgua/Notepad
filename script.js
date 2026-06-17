@@ -1,5 +1,25 @@
 alert("JS loaded");
-document.addEventListener("DOMContentLoaded", () => {document.addEventListener("DOMContentLoaded", ()ById("italicBtn");
+
+document.addEventListener("DOMContentLoaded", () => {
+  const note = document.getElementById("note");
+  const preview = document.getElementById("preview");
+  const timerDisplay = document.getElementById("timer");
+  const stats = document.getElementById("stats");
+
+  const clearBtn = document.getElementById("clearBtn");
+  const exportBtn = document.getElementById("exportBtn");
+  const copyBtn = document.getElementById("copyBtn");
+  const historyBtn = document.getElementById("historyBtn");
+  const themeBtn = document.getElementById("themeBtn");
+  const timerToggleBtn = document.getElementById("timerToggleBtn");
+  const shareBtn = document.getElementById("shareBtn");
+  const previewBtn = document.getElementById("previewBtn");
+  const fullscreenBtn = document.getElementById("fullscreenBtn");
+
+  const fontDownBtn = document.getElementById("fontDownBtn");
+  const fontUpBtn = document.getElementById("fontUpBtn");
+  const boldBtn = document.getElementById("boldBtn");
+  const italicBtn = document.getElementById("italicBtn");
   const headingBtn = document.getElementById("headingBtn");
 
   let fontSize = Number(localStorage.getItem("fontSize")) || 31;
@@ -8,7 +28,7 @@ document.addEventListener("DOMContentLoaded", () => {document.addEventListener("
   let timerRunning = false;
   let timerInterval = null;
 
-  /* INITIAL LOAD */
+  // Initial load
   note.value = localStorage.getItem("notepadText") || "";
   note.style.fontSize = fontSize + "px";
   preview.style.fontSize = fontSize + "px";
@@ -17,7 +37,7 @@ document.addEventListener("DOMContentLoaded", () => {document.addEventListener("
   updateStats();
   updateTimerDisplay();
 
-  /* AUTOSAVE */
+  // Autosave
   note.addEventListener("input", () => {
     localStorage.setItem("notepadText", note.value);
     updateStats();
@@ -27,7 +47,7 @@ document.addEventListener("DOMContentLoaded", () => {document.addEventListener("
     }
   });
 
-  /* STATS */
+  // Stats
   function updateStats() {
     const text = note.value;
     const characters = text.length;
@@ -36,7 +56,7 @@ document.addEventListener("DOMContentLoaded", () => {document.addEventListener("
     stats.textContent = `${characters} characters, ${words} words`;
   }
 
-  /* FONT SIZE */
+  // Font size
   function changeFontSize(amount) {
     fontSize += amount;
 
@@ -49,7 +69,7 @@ document.addEventListener("DOMContentLoaded", () => {document.addEventListener("
     localStorage.setItem("fontSize", fontSize);
   }
 
-  /* MARKDOWN PREVIEW */
+  // Markdown parser
   function parseMarkdown(text) {
     return text
       .replace(/^### (.*$)/gim, "<h3>$1</h3>")
@@ -60,6 +80,7 @@ document.addEventListener("DOMContentLoaded", () => {document.addEventListener("
       .replace(/\n/g, "<br>");
   }
 
+  // Preview toggle
   function togglePreview() {
     previewMode = !previewMode;
 
@@ -74,7 +95,7 @@ document.addEventListener("DOMContentLoaded", () => {document.addEventListener("
     }
   }
 
-  /* FORMAT TEXT */
+  // Format text
   function formatText(type) {
     note.focus();
 
@@ -102,7 +123,7 @@ document.addEventListener("DOMContentLoaded", () => {document.addEventListener("
     updateStats();
   }
 
-  /* CLEAR */
+  // Clear note
   function clearNote() {
     const confirmClear = confirm("Clear this note?");
     if (!confirmClear) return;
@@ -113,7 +134,7 @@ document.addEventListener("DOMContentLoaded", () => {document.addEventListener("
     note.focus();
   }
 
-  /* EXPORT */
+  // Export note
   function exportNote() {
     const blob = new Blob([note.value], { type: "text/plain" });
     const url = URL.createObjectURL(blob);
@@ -126,7 +147,7 @@ document.addEventListener("DOMContentLoaded", () => {document.addEventListener("
     URL.revokeObjectURL(url);
   }
 
-  /* COPY */
+  // Copy note
   async function copyNote() {
     try {
       await navigator.clipboard.writeText(note.value);
@@ -136,7 +157,7 @@ document.addEventListener("DOMContentLoaded", () => {document.addEventListener("
     }
   }
 
-  /* HISTORY */
+  // Save history
   function saveHistory() {
     const history = JSON.parse(localStorage.getItem("noteHistory")) || [];
 
@@ -153,7 +174,7 @@ document.addEventListener("DOMContentLoaded", () => {document.addEventListener("
     alert("History saved ✅");
   }
 
-  /* TIMER */
+  // Timer display
   function updateTimerDisplay() {
     const minutes = Math.floor(seconds / 60);
     const remainingSeconds = seconds % 60;
@@ -162,6 +183,7 @@ document.addEventListener("DOMContentLoaded", () => {document.addEventListener("
       `${String(minutes).padStart(2, "0")}:${String(remainingSeconds).padStart(2, "0")}`;
   }
 
+  // Timer toggle
   function toggleTimer() {
     timerRunning = !timerRunning;
 
@@ -176,7 +198,7 @@ document.addEventListener("DOMContentLoaded", () => {document.addEventListener("
     }
   }
 
-  /* THEME */
+  // Theme
   function applySystemTheme() {
     const prefersLight = window.matchMedia("(prefers-color-scheme: light)").matches;
 
@@ -191,7 +213,7 @@ document.addEventListener("DOMContentLoaded", () => {document.addEventListener("
     document.body.classList.toggle("light");
   }
 
-  /* FULLSCREEN */
+  // Fullscreen
   function toggleFullscreen() {
     if (!document.fullscreenElement) {
       document.documentElement.requestFullscreen();
@@ -200,7 +222,7 @@ document.addEventListener("DOMContentLoaded", () => {document.addEventListener("
     }
   }
 
-  /* SHARE */
+  // Share note
   async function shareNote() {
     if (navigator.share) {
       try {
@@ -216,7 +238,7 @@ document.addEventListener("DOMContentLoaded", () => {document.addEventListener("
     }
   }
 
-  /* BUTTON EVENTS */
+  // Button events
   clearBtn.addEventListener("click", clearNote);
   exportBtn.addEventListener("click", exportNote);
   copyBtn.addEventListener("click", copyNote);
@@ -237,21 +259,4 @@ document.addEventListener("DOMContentLoaded", () => {document.addEventListener("
     .matchMedia("(prefers-color-scheme: light)")
     .addEventListener("change", applySystemTheme);
 });
-  const note = document.getElementById("note");
-  const preview = document.getElementById("preview");
-  const timerDisplay = document.getElementById("timer");
-  const stats = document.getElementById("stats");
-
-  const clearBtn = document.getElementById("clearBtn");
-  const exportBtn = document.getElementById("exportBtn");
-  const copyBtn = document.getElementById("copyBtn");
-  const historyBtn = document.getElementById("historyBtn");
-  const themeBtn = document.getElementById("themeBtn");
-  const timerToggleBtn = document.getElementById("timerToggleBtn");
-  const shareBtn = document.getElementById("shareBtn");
-  const previewBtn = document.getElementById("previewBtn");
-  const fullscreenBtn = document.getElementById("fullscreenBtn");
-
-  const fontDownBtn = document.getElementById("fontDownBtn");
-  const fontUpBtn = document.getElementById("fontUpBtn");
-  const boldBtn = document.getElementById("boldBtn");
+``
