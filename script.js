@@ -1,3 +1,4 @@
+alert("JS loaded");
 document.addEventListener("DOMContentLoaded", () => {document.addEventListener("DOMContentLoaded", ()ById("italicBtn");
   const headingBtn = document.getElementById("headingBtn");
 
