@@ -1,6 +1,23 @@
 :root {
   --bg: #071013;
-  --toolbar: #18212border: rgba(0, 0, 0, 0.12);  --toolbar: #18212b;
+  --toolbar: #18212b;
+  --toolbar-dark: #121923;
+  --text: #e5e7eb;
+  --muted: #a7abb4;
+  --border: rgba(255, 255, 255, 0.13);
+  --brand: #72b7ff;
+  --pill-blue: #bdf1ff;
+  --pill-purple: #e9d0ff;
+}
+
+/* Light mode */
+.light {
+  --bg: #f8fafc;
+  --toolbar: #ffffff;
+  --toolbar-dark: #f1f5f9;
+  --text: #111827;
+  --muted: #4b5563;
+  --border: rgba(0, 0, 0, 0.12);
   --brand: #2563eb;
   --pill-blue: #dbeafe;
   --pill-purple: #ede9fe;
@@ -142,7 +159,6 @@ body {
   position: relative;
 }
 
-/* RICH TEXT EDITOR */
 #note,
 #preview {
   width: 100%;
@@ -156,26 +172,14 @@ body {
   font-family: "JetBrains Mono", monospace;
   font-size: 31px;
   line-height: 1.72;
-  font-weight: 700;
+  font-weight: 800;
   overflow-y: auto;
 }
 
-/* Placeholder for contenteditable div */
-#note:empty::before {
-  content: attr(data-placeholder);
+#note::placeholder {
   color: rgba(229, 231, 235, 0.35);
-  pointer-events: none;
 }
 
-/* Heading inside editor */
-#note h1,
-#preview h1 {
-  font-size: 1.8em;
-  line-height: 1.3;
-  margin: 0.6em 0;
-}
-
-/* Preview */
 #preview {
   display: none;
 }
@@ -264,20 +268,3 @@ body {
     padding: 9px 12px;
   }
 }
-``
-  --toolbar-dark: #121923;
-  --text: #e5e7eb;
-  --muted: #a7abb4;
-  --border: rgba(255, 255, 255, 0.13);
-  --brand: #72b7ff;
-  --pill-blue: #bdf1ff;
-  --pill-purple: #e9d0ff;
-}
-
-/* Light mode */
-.light {
-  --bg: #f8fafc;
-  --toolbar: #ffffff;
-  --toolbar-dark: #f1f5f9;
-  --text: #111827;
-  --muted: #4b5563;
