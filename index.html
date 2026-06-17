@@ -7,7 +7,7 @@
   <title>Notepad Pro</title>
 
   <!-- CSS -->
-  style.css
+  <link rel="stylesheet" href="style.css" />
 
   <!-- Fonts -->
   https://fonts.googleapis.com
@@ -18,7 +18,7 @@
   https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css
 
   <!-- JavaScript -->
-  script.jsscript>
+  <script src="script.js" defer></script>
 </head>
 
 <body>
@@ -61,7 +61,7 @@
     </div>
 
     <div class="toolbar-right">
-      <button class="icon-btn" id="previewBtn" title="Markdown preview">
+      <button class="icon-btn" id="previewBtn" title="Preview">
         <i class="fa-regular fa-window-restore"></i>
       </button>
 
@@ -91,7 +91,13 @@
   <!-- Editor area -->
   <main class="editor-shell">
     <section class="editor-frame">
-      <textarea id="note" spellcheck="true" placeholder="Start typing..."></textarea>
+      <div
+        id="note"
+        contenteditable="true"
+        spellcheck="true"
+        data-placeholder="Start typing..."
+      ></div>
+
       <div id="preview"></div>
     </section>
   </main>
