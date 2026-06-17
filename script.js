@@ -1,4 +1,6 @@
-document.addEventListener("DOMContentLoaded", () => {document.addEventListener("DOMContentLoaded", () =>  const preview = document.getElementById("preview");
+document.addEventListener("DOMContentLoaded", () => {
+  const note = document.getElementById("note");
+  const preview = document.getElementById("preview");
   const timerDisplay = document.getElementById("timer");
   const stats = document.getElementById("stats");
 
@@ -230,5 +232,3 @@ document.addEventListener("DOMContentLoaded", () => {document.addEventListener("
     .matchMedia("(prefers-color-scheme: light)")
     .addEventListener("change", applySystemTheme);
 });
-
-  const note = document.getElementById("note");
