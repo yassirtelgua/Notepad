@@ -1,92 +1,159 @@
 :root {
   --bg: #071013;
-  --surface: #111827;
-  --surface-2: #1f2937;
+  --toolbar: #18212b;
+  --toolbar-dark: #121923;
   --text: #e5e7eb;
-  --muted: #9ca3af;
-  --accent: #60a5fa;
-  --border: rgba(255, 255, 255, 0.12);
+  --muted: #a7abb4;
+  --border: rgba(255, 255, 255, 0.13);
+  --brand: #72b7ff;
+  --pill-blue: #bdf1ff;
+  --pill-purple: #e9d0ff;
 }
 
 .light {
   --bg: #f8fafc;
-  --surface: #ffffff;
-  --surface-2: #e5e7eb;
+  --toolbar: #ffffff;
+  --toolbar-dark: #f1f5f9;
   --text: #111827;
   --muted: #4b5563;
-  --accent: #2563eb;
   --border: rgba(0, 0, 0, 0.12);
+  --brand: #2563eb;
+  --pill-blue: #dbeafe;
+  --pill-purple: #ede9fe;
 }
 
 * {
   box-sizing: border-box;
 }
 
+html,
 body {
   margin: 0;
+  height: 100%;
+}
+
+body {
   font-family: "Inter", Arial, sans-serif;
   background: var(--bg);
   color: var(--text);
-  height: 100vh;
-  display: flex;
-  flex-direction: column;
+  overflow: hidden;
 }
 
-/* TOP TOOLBAR */
-.toolbar {
-  height: 64px;
-  background: var(--surface);
+/* TOOLBAR LIKE SCREENSHOT */
+.app-toolbar {
+  height: 78px;
+  background: var(--toolbar);
   border-bottom: 1px solid var(--border);
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 0 28px;
+  padding: 0 7%;
 }
 
-.brand {
+.toolbar-left,
+.toolbar-right {
   display: flex;
   align-items: center;
-  gap: 10px;
-  color: var(--accent);
-  font-size: 22px;
-  font-weight: 700;
+  gap: 18px;
 }
 
-.toolbar-actions {
-  display: flex;
-  gap: 10px;
-}
-
-button {
+/* ICON BUTTONS LIKE IMAGE */
+.icon-btn {
+  background: transparent;
   border: none;
-  background: var(--surface-2);
   color: var(--text);
-  padding: 9px 12px;
+  font-size: 25px;
+  padding: 6px;
   border-radius: 10px;
   cursor: pointer;
-  font-weight: 700;
-  transition: 0.2s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  transition: 0.18s ease;
 }
 
-button:hover {
-  transform: translateY(-1px);
-  background: var(--accent);
+.icon-btn:hover {
+  background: rgba(255, 255, 255, 0.08);
   color: white;
+  transform: translateY(-1px);
 }
 
-button:active {
-  transform: scale(0.96);
+.icon-btn:active {
+  transform: scale(0.94);
+}
+
+.brand-title {
+  color: var(--brand);
+  font-size: 27px;
+  font-weight: 800;
+  letter-spacing: 1px;
+  text-shadow: 0 0 10px rgba(114, 183, 255, 0.85);
+}
+
+.about-btn {
+  background: transparent;
+  border: none;
+  color: var(--muted);
+  font-size: 22px;
+  font-weight: 800;
+  cursor: pointer;
+  padding: 8px 10px;
+}
+
+.about-btn:hover {
+  color: var(--text);
+}
+
+/* FLOATING FORMAT TOOLBAR */
+.floating-tools {
+  position: fixed;
+  top: 98px;
+  right: 7%;
+  z-index: 20;
+  background: rgba(24, 33, 43, 0.95);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 8px;
+  display: flex;
+  gap: 8px;
+  box-shadow: 0 14px 35px rgba(0, 0, 0, 0.35);
+}
+
+.mini-btn {
+  background: transparent;
+  border: none;
+  color: var(--text);
+  font-size: 15px;
+  font-weight: 800;
+  min-width: 36px;
+  height: 34px;
+  border-radius: 9px;
+  cursor: pointer;
+  transition: 0.18s ease;
+}
+
+.mini-btn:hover {
+  background: rgba(255, 255, 255, 0.12);
 }
 
 /* EDITOR */
-.editor-wrap {
-  position: relative;
-  flex: 1;
+.editor-shell {
+  height: calc(100vh - 78px);
+  background: var(--bg);
   display: flex;
-  overflow: hidden;
+  justify-content: center;
 }
 
-#note {
+.editor-frame {
+  width: 78%;
+  height: 100%;
+  border-left: 1px solid var(--border);
+  border-right: 1px solid var(--border);
+  position: relative;
+}
+
+#note,
+#preview {
   width: 100%;
   height: 100%;
   border: none;
@@ -94,85 +161,103 @@ button:active {
   resize: none;
   background: var(--bg);
   color: var(--text);
-  padding: 42px 12%;
-  font-size: 24px;
-  line-height: 1.7;
-  font-weight: 700;
+  padding: 34px 40px 90px;
+  font-family: "JetBrains Mono", monospace;
+  font-size: 31px;
+  line-height: 1.72;
+  font-weight: 800;
+  overflow-y: auto;
+}
+
+#note::placeholder {
+  color: rgba(229, 231, 235, 0.35);
 }
 
 #preview {
   display: none;
-  width: 100%;
-  height: 100%;
-  overflow-y: auto;
-  background: var(--bg);
-  color: var(--text);
-  padding: 42px 12%;
-  font-size: 24px;
-  line-height: 1.7;
-  font-weight: 700;
 }
 
-/* FLOATING TOOLBAR */
-#floatingToolbar {
+/* BOTTOM STATUS PILLS LIKE SCREENSHOT */
+.bottom-status {
   position: fixed;
-  top: 86px;
-  right: 24px;
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: 14px;
-  padding: 8px;
+  right: 7.5%;
+  bottom: 24px;
+  z-index: 30;
   display: flex;
-  gap: 6px;
-  z-index: 10;
-  box-shadow: 0 10px 30px rgba(0,0,0,0.25);
-}
-
-/* FOOTER */
-.footer {
-  height: 52px;
-  background: var(--surface);
-  border-top: 1px solid var(--border);
-  display: flex;
-  justify-content: flex-end;
+  gap: 10px;
   align-items: center;
-  gap: 14px;
-  padding: 0 28px;
-  color: var(--muted);
-  font-weight: 700;
 }
 
-.footer span {
-  background: var(--surface-2);
-  padding: 8px 14px;
+.pill {
   border-radius: 999px;
+  padding: 12px 20px;
+  color: #3d3440;
+  font-weight: 800;
+  font-size: 16px;
+}
+
+.timer-pill {
+  background: var(--pill-blue);
+}
+
+.stats-pill {
+  background: var(--pill-purple);
 }
 
 /* MOBILE */
-@media (max-width: 768px) {
-  .toolbar {
+@media (max-width: 900px) {
+  .app-toolbar {
+    padding: 12px;
     height: auto;
-    padding: 14px;
     flex-direction: column;
     gap: 12px;
   }
 
-  #floatingToolbar {
-    top: auto;
-    bottom: 70px;
-    right: 16px;
+  .toolbar-left,
+  .toolbar-right {
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 12px;
+  }
+
+  .brand-title {
+    font-size: 22px;
+  }
+
+  .icon-btn {
+    font-size: 21px;
+  }
+
+  .editor-shell {
+    height: calc(100vh - 140px);
+  }
+
+  .editor-frame {
+    width: 100%;
+    border-left: none;
+    border-right: none;
   }
 
   #note,
   #preview {
-    padding: 24px;
-    font-size: 18px;
+    font-size: 19px;
+    padding: 24px 18px 110px;
   }
 
-  .footer {
+  .floating-tools {
+    top: auto;
+    right: 14px;
+    bottom: 80px;
+  }
+
+  .bottom-status {
+    right: 12px;
+    left: 12px;
     justify-content: center;
+  }
+
+  .pill {
     font-size: 12px;
-    padding: 0 10px;
+    padding: 9px 12px;
   }
 }
-``
