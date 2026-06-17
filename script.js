@@ -29,7 +29,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const historyList = document.getElementById("historyList");
 
   let fontSize = Number(localStorage.getItem("fontSize")) || 31;
-  let previewMode = false;
+  let readMode = false;
   let seconds = Number(localStorage.getItem("timerSeconds")) || 0;
   let timerRunning = false;
   let timerInterval = null;
@@ -67,7 +67,7 @@ document.addEventListener("DOMContentLoaded", () => {
     saveNote();
     updateStats();
 
-    if (previewMode) {
+    if (readMode) {
       preview.innerHTML = note.innerHTML;
     }
   });
@@ -114,18 +114,29 @@ document.addEventListener("DOMContentLoaded", () => {
     updateStats();
   }
 
-  function togglePreview() {
-    previewMode = !previewMode;
+  function toggleReadMode() {
+    readMode = !readMode;
 
-    if (previewMode) {
+    if (readMode) {
+      saveNote();
       preview.innerHTML = note.innerHTML;
+
       preview.style.display = "block";
       note.style.display = "none";
+
+      document.body.classList.add("read-mode");
+      previewBtn.classList.add("active");
+
       showToast("Read mode enabled", "info");
     } else {
       preview.style.display = "none";
       note.style.display = "block";
+
+      document.body.classList.remove("read-mode");
+      previewBtn.classList.remove("active");
+
       note.focus();
+
       showToast("Edit mode enabled", "info");
     }
   }
@@ -137,6 +148,10 @@ document.addEventListener("DOMContentLoaded", () => {
     note.innerHTML = "";
     localStorage.removeItem("notepadHTML");
     localStorage.removeItem("notepadText");
+
+    if (readMode) {
+      preview.innerHTML = "";
+    }
 
     updateStats();
     note.focus();
@@ -276,7 +291,7 @@ document.addEventListener("DOMContentLoaded", () => {
     saveNote();
     updateStats();
 
-    if (previewMode) {
+    if (readMode) {
       preview.innerHTML = note.innerHTML;
     }
 
@@ -381,7 +396,7 @@ document.addEventListener("DOMContentLoaded", () => {
   themeBtn.addEventListener("click", toggleTheme);
   timerBtn.addEventListener("click", toggleTimer);
   shareBtn.addEventListener("click", shareNote);
-  previewBtn.addEventListener("click", togglePreview);
+  previewBtn.addEventListener("click", toggleReadMode);
   fullscreenBtn.addEventListener("click", toggleFullscreen);
   aboutBtn.addEventListener("click", showAbout);
 
