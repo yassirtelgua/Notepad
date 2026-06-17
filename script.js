@@ -1,21 +1,46 @@
-const note = document.getElementById("note");const note = documentElementById("preview");
-const stats = document.getElementById("stats");
-const timerDisplay = document.getElementById("timer");
+const note = document.getElementById("note");
+const preview = document.getElementById("preview");
+constDisplay = document.getElementById("timer");const stats = document.getElementById("stats");
 
-let fontSize = Number(localStorage.getItem("fontSize")) || 24;
+const clearBtn = document.getElementById("clearBtn");
+const exportBtn = document.getElementById("exportBtn");
+const copyBtn = document.getElementById("copyBtn");
+const historyBtn = document.getElementById("historyBtn");
+const themeBtn = document.getElementById("themeBtn");
+const timerToggleBtn = document.getElementById("timerToggleBtn");
+const shareBtn = document.getElementById("shareBtn");
+const previewBtn = document.getElementById("previewBtn");
+const fullscreenBtn = document.getElementById("fullscreenBtn");
+
+const fontDownBtn = document.getElementById("fontDownBtn");
+const fontUpBtn = document.getElementById("fontUpBtn");
+const boldBtn = document.getElementById("boldBtn");
+const italicBtn = document.getElementById("italicBtn");
+const headingBtn = document.getElementById("headingBtn");
+
+let fontSize = Number(localStorage.getItem("fontSize")) || 31;
 let previewMode = false;
-let seconds = 0;
+let seconds = Number(localStorage.getItem("timerSeconds")) || 0;
+let timerRunning = false;
+let timerInterval = null;
 
+/* INITIAL LOAD */
+note.value = localStorage.getItem("notepadText") || "";
 note.style.fontSize = fontSize + "px";
 preview.style.fontSize = fontSize + "px";
 
-note.value = localStorage.getItem("notepadText") || "";
+applySystemTheme();
 updateStats();
+updateTimerDisplay();
 
 /* AUTOSAVE */
 note.addEventListener("input", () => {
   localStorage.setItem("notepadText", note.value);
   updateStats();
+
+  if (previewMode) {
+    preview.innerHTML = parseMarkdown(note.value);
+  }
 });
 
 /* STATS */
@@ -32,7 +57,7 @@ function changeFontSize(amount) {
   fontSize += amount;
 
   if (fontSize < 14) fontSize = 14;
-  if (fontSize > 48) fontSize = 48;
+  if (fontSize > 56) fontSize = 56;
 
   note.style.fontSize = fontSize + "px";
   preview.style.fontSize = fontSize + "px";
@@ -40,7 +65,7 @@ function changeFontSize(amount) {
   localStorage.setItem("fontSize", fontSize);
 }
 
-/* MARKDOWN */
+/* MARKDOWN PREVIEW */
 function parseMarkdown(text) {
   return text
     .replace(/^### (.*$)/gim, "<h3>$1</h3>")
@@ -61,10 +86,11 @@ function togglePreview() {
   } else {
     preview.style.display = "none";
     note.style.display = "block";
+    note.focus();
   }
 }
 
-/* FORMAT TOOLBAR */
+/* FORMAT TEXT */
 function formatText(type) {
   note.focus();
 
@@ -92,7 +118,41 @@ function formatText(type) {
   updateStats();
 }
 
-/* SAVE HISTORY */
+/* CLEAR */
+function clearNote() {
+  const confirmClear = confirm("Clear this note?");
+  if (!confirmClear) return;
+
+  note.value = "";
+  localStorage.removeItem("notepadText");
+  updateStats();
+  note.focus();
+}
+
+/* EXPORT */
+function exportNote() {
+  const blob = new Blob([note.value], { type: "text/plain" });
+  const url = URL.createObjectURL(blob);
+
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = "note.txt";
+  a.click();
+
+  URL.revokeObjectURL(url);
+}
+
+/* COPY */
+async function copyNote() {
+  try {
+    await navigator.clipboard.writeText(note.value);
+    alert("Copied ✅");
+  } catch {
+    alert("Copy failed. Select text manually and press Ctrl+C.");
+  }
+}
+
+/* HISTORY */
 function saveHistory() {
   const history = JSON.parse(localStorage.getItem("noteHistory")) || [];
 
@@ -106,33 +166,33 @@ function saveHistory() {
   }
 
   localStorage.setItem("noteHistory", JSON.stringify(history));
-
   alert("History saved ✅");
 }
 
-/* CLEAR */
-function clearNote() {
-  const confirmClear = confirm("Clear this note?");
-
-  if (!confirmClear) return;
-
-  note.value = "";
-  localStorage.removeItem("notepadText");
-  updateStats();
-}
-
 /* TIMER */
-setInterval(() => {
-  seconds++;
-
+function updateTimerDisplay() {
   const minutes = Math.floor(seconds / 60);
   const remainingSeconds = seconds % 60;
 
   timerDisplay.textContent =
     `${String(minutes).padStart(2, "0")}:${String(remainingSeconds).padStart(2, "0")}`;
-}, 1000);
+}
 
-/* AUTO THEME */
+function toggleTimer() {
+  timerRunning = !timerRunning;
+
+  if (timerRunning) {
+    timerInterval = setInterval(() => {
+      seconds++;
+      localStorage.setItem("timerSeconds", seconds);
+      updateTimerDisplay();
+    }, 1000);
+  } else {
+    clearInterval(timerInterval);
+  }
+}
+
+/* THEME */
 function applySystemTheme() {
   const prefersLight = window.matchMedia("(prefers-color-scheme: light)").matches;
 
@@ -143,6 +203,52 @@ function applySystemTheme() {
   }
 }
 
-applySystemTheme();
+function toggleTheme() {
+  document.body.classList.toggle("light");
+}
 
-window.matchMedia("(prefers-color-scheme: light)").addEventListener("change", applySystemTheme);
+/* FULLSCREEN */
+function toggleFullscreen() {
+  if (!document.fullscreenElement) {
+    document.documentElement.requestFullscreen();
+  } else {
+    document.exitFullscreen();
+  }
+}
+
+/* SHARE */
+async function shareNote() {
+  if (navigator.share) {
+    try {
+      await navigator.share({
+        title: "My note",
+        text: note.value
+      });
+    } catch {
+      return;
+    }
+  } else {
+    copyNote();
+  }
+}
+
+/* BUTTON EVENTS */
+clearBtn.addEventListener("click", clearNote);
+exportBtn.addEventListener("click", exportNote);
+copyBtn.addEventListener("click", copyNote);
+historyBtn.addEventListener("click", saveHistory);
+themeBtn.addEventListener("click", toggleTheme);
+timerToggleBtn.addEventListener("click", toggleTimer);
+shareBtn.addEventListener("click", shareNote);
+previewBtn.addEventListener("click", togglePreview);
+fullscreenBtn.addEventListener("click", toggleFullscreen);
+
+fontDownBtn.addEventListener("click", () => changeFontSize(-2));
+fontUpBtn.addEventListener("click", () => changeFontSize(2));
+boldBtn.addEventListener("click", () => formatText("bold"));
+italicBtn.addEventListener("click", () => formatText("italic"));
+headingBtn.addEventListener("click", () => formatText("heading"));
+
+window
+  .matchMedia("(prefers-color-scheme: light)")
+  .addEventListener("change", applySystemTheme);
