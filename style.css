@@ -11,14 +11,21 @@
   --card: rgba(240, 240, 240, 0.8);
 }
 
+/* GLOBAL */
 body {
   margin: 0;
   font-family: Inter, Arial;
   background: var(--bg);
   color: var(--text);
-  transition: 0.3s;
+  transition: 0.3s ease;
 }
 
+/* GLASS EFFECT */
+.sidebar, .editor {
+  backdrop-filter: blur(10px);
+}
+
+/* CONTAINER */
 .container {
   max-width: 1000px;
   margin: auto;
@@ -61,17 +68,19 @@ h1 {
   background: var(--card);
   padding: 12px;
   border-radius: 16px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.3);
 }
 
-/* BUTTONS */
+/* BUTTONS GENERAL */
 button {
   border: none;
   border-radius: 10px;
   padding: 10px 14px;
   cursor: pointer;
-  transition: 0.25s;
+  transition: all 0.25s ease;
 }
 
+/* NEW NOTE BUTTON */
 .new-btn {
   width: 100%;
   background: linear-gradient(135deg, #238636, #2ea043);
@@ -81,22 +90,30 @@ button {
 
 .new-btn:hover {
   transform: translateY(-3px);
-}
-
-.actions button:hover {
-  background: var(--accent);
-  color: white;
+  box-shadow: 0 10px 20px rgba(35, 134, 54, 0.4);
 }
 
 /* NOTES */
+#notesList {
+  list-style: none;
+  padding: 0;
+  margin-top: 10px;
+}
+
 #notesList li {
-  padding: 10px;
+  padding: 12px;
   border-radius: 8px;
   cursor: pointer;
+  transition: 0.25s;
+}
+
+#notesList li:hover {
+  background: rgba(255,255,255,0.1);
 }
 
 #notesList li.active {
   background: var(--accent);
+  transform: scale(1.03);
 }
 
 /* EDITOR */
@@ -105,22 +122,51 @@ button {
   background: var(--card);
   padding: 12px;
   border-radius: 16px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.3);
 }
 
+/* INPUTS */
 #title, #fontSelector {
   width: 100%;
-  padding: 10px;
+  padding: 12px;
   margin-bottom: 8px;
-  border-radius: 8px;
+  border-radius: 10px;
   border: none;
 }
 
 textarea {
   width: 100%;
   height: 300px;
-  padding: 10px;
+  padding: 12px;
   border-radius: 10px;
   border: none;
+  transition: 0.2s;
+}
+
+textarea:focus {
+  outline: 2px solid var(--accent);
+}
+
+/* ACTION BUTTONS */
+.actions button {
+  background: var(--card);
+  color: var(--text);
+}
+
+.actions button:hover {
+  background: var(--accent);
+  color: white;
+}
+
+/* DELETE BUTTON */
+.bottom button {
+  background: #da3633;
+  color: white;
+}
+
+.bottom button:hover {
+  background: #ff4d4f;
+  transform: scale(1.05);
 }
 
 /* FOOTER */
@@ -130,49 +176,20 @@ textarea {
   margin-top: 10px;
 }
 
-/* DELETE */
-.bottom button {
-  background: #da3633;
-  color: white;
+/* CLICK EFFECT */
+button:active {
+  transform: scale(0.95);
 }
 
-/* UNDO */
+/* UNDO POPUP */
 .undo-popup {
   position: fixed;
   bottom: 20px;
   left: 50%;
   transform: translateX(-50%);
   background: #333;
-  padding: 10px 20px;
-  border-radius: 8px;
+  padding: 12px 20px;
+  border-radius: 10px;
   color: white;
   cursor: pointer;
-}
-
-/* ✅ MOBILE */
-@media (max-width: 768px) {
-  .main {
-    flex-direction: column;
-  }
-
-  .sidebar, .editor {
-    width: 100%;
-  }
-
-  .top-bar {
-    flex-direction: column;
-    gap: 10px;
-  }
-
-  .top-bar input {
-    width: 100%;
-  }
-
-  .actions {
-    justify-content: space-around;
-  }
-
-  textarea {
-    height: 200px;
-  }
 }
