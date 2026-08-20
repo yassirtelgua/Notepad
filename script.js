@@ -142,7 +142,21 @@ document.addEventListener("DOMContentLoaded", () => {
     updateStats();
   }
 
-  function toggleReadMode() {
+  
+  function syncReadModeTypography() {
+    if (!note || !preview) return;
+
+    const styles = window.getComputedStyle(note);
+
+    preview.style.fontFamily = styles.fontFamily;
+    preview.style.fontSize = styles.fontSize;
+    preview.style.fontWeight = styles.fontWeight;
+    preview.style.lineHeight = styles.lineHeight;
+    preview.style.letterSpacing = styles.letterSpacing;
+    preview.style.color = styles.color;
+  }
+
+function toggleReadMode() {
     if (!preview) return;
 
     readMode = !readMode;
@@ -152,6 +166,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
       preview.innerHTML = note.innerHTML;
       preview.style.display = "block";
+      syncReadModeTypography();
       note.style.display = "none";
 
       document.body.classList.add("read-mode");
