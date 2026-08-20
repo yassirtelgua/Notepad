@@ -820,3 +820,156 @@ html body.dark .about-btn,
 html body.dark .workspace-name {
   color: #f4f9ff !important;
 }
+
+
+/* =========================================================
+   V7 LAYOUT — CLEAN EDITOR TOOLBAR + FOOTER STATUS
+   ========================================================= */
+
+/* The formatting toolbar is now part of the editor card,
+   so it never floats over the writing area. */
+.editor-frame > .floating-tools {
+  position: relative;
+  top: auto;
+  right: auto;
+  z-index: 5;
+
+  width: fit-content;
+  margin: 10px 42px 0 auto;
+
+  display: flex;
+  align-items: center;
+  gap: 3px;
+
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 5px;
+
+  box-shadow: 0 6px 20px rgba(25,35,55,.06);
+
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+}
+
+.editor-frame > .floating-tools .mini-btn {
+  min-width: 34px;
+  height: 30px;
+}
+
+.editor-frame > #note,
+.editor-frame > #preview {
+  height: calc(100% - 140px);
+  padding-top: 34px;
+}
+
+/* Keep the formatting toolbar above the writing region in read mode too. */
+.editor-frame > .floating-tools {
+  flex-shrink: 0;
+}
+
+.editor-footer {
+  height: 48px;
+  padding: 0 20px 0 28px;
+  gap: 16px;
+}
+
+.footer-status {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 7px;
+  margin-left: auto;
+}
+
+.footer-status .pill {
+  position: static;
+  right: auto;
+  bottom: auto;
+  margin: 0;
+  padding: 6px 11px;
+  font-size: 10px;
+  box-shadow: none;
+}
+
+/* Remove the old fixed status layout completely. */
+.bottom-status {
+  display: none !important;
+}
+
+/* No dropdown arrow next to the logo. */
+.brand-chevron {
+  display: none !important;
+}
+
+/* Dark-mode version of the now-in-card formatting toolbar. */
+html body.dark .editor-frame > .floating-tools {
+  background: #0d1725 !important;
+  border-color: rgba(96,165,250,.16) !important;
+  box-shadow:
+    0 8px 24px rgba(0,0,0,.24),
+    0 0 20px rgba(37,99,235,.05) !important;
+}
+
+html body.dark .editor-footer {
+  background: #0b1420 !important;
+  border-top-color: rgba(148,190,230,.10) !important;
+}
+
+html body.dark .footer-status .timer-pill {
+  background: rgba(37,99,235,.20) !important;
+  color: #93c5fd !important;
+}
+
+html body.dark .footer-status .stats-pill {
+  background: rgba(6,182,212,.15) !important;
+  color: #a5e6f5 !important;
+}
+
+/* Mobile: keep the toolbar inside the card and above the text. */
+@media (max-width: 1000px) {
+  .editor-frame > .floating-tools {
+    margin: 8px 18px 0 auto;
+  }
+
+  .editor-frame > #note,
+  .editor-frame > #preview {
+    height: calc(100% - 132px);
+    padding-top: 24px;
+  }
+
+  .editor-footer {
+    padding: 0 14px 0 16px;
+  }
+
+  .footer-status {
+    gap: 4px;
+  }
+
+  .footer-status .pill {
+    padding: 5px 8px;
+    font-size: 9px;
+  }
+}
+
+@media (max-width: 650px) {
+  .editor-frame > .floating-tools {
+    margin: 7px 12px 0 auto;
+  }
+
+  .editor-frame > #note,
+  .editor-frame > #preview {
+    height: calc(100% - 126px);
+    padding-top: 20px;
+  }
+
+  .editor-footer {
+    padding: 0 10px;
+    font-size: 8px;
+  }
+
+  .footer-status .pill {
+    font-size: 8px;
+    padding: 4px 7px;
+  }
+}
