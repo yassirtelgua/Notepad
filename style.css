@@ -87,3 +87,188 @@ button:focus-visible{outline:3px solid rgba(109,40,217,.25);outline-offset:2px}
   .history-panel{width:calc(100% - 20px);max-width:none;height:calc(100vh - 20px);top:10px;right:-110%}.history-panel.show{right:10px}
   .toast-container{right:12px;left:12px;bottom:68px}.toast{width:100%;min-width:auto;max-width:none}
 }
+
+
+/* ===== VISUAL V2: stronger Framer-style color atmosphere ===== */
+
+body {
+  position: relative;
+  isolation: isolate;
+  background:
+    radial-gradient(ellipse 620px 380px at 7% 112%, rgba(67,56,202,.25), transparent 72%),
+    radial-gradient(ellipse 600px 390px at 94% 110%, rgba(236,72,153,.22), transparent 72%),
+    radial-gradient(ellipse 680px 430px at 50% 108%, rgba(124,58,237,.30), transparent 70%),
+    linear-gradient(180deg, #fafbfc 0%, #f7f7fa 32%, #f1eef8 62%, #e7dff8 82%, #ddd1ff 100%);
+}
+
+/* Large atmospheric glow at the bottom, visible behind the app */
+body::before {
+  content: "";
+  position: fixed;
+  pointer-events: none;
+  z-index: -1;
+  width: 900px;
+  height: 520px;
+  left: 50%;
+  bottom: -360px;
+  transform: translateX(-50%);
+  background: radial-gradient(
+    ellipse at center,
+    rgba(91,33,182,.50) 0%,
+    rgba(109,40,217,.32) 25%,
+    rgba(139,92,246,.20) 45%,
+    rgba(168,85,247,.10) 61%,
+    transparent 78%
+  );
+  filter: blur(30px);
+}
+
+/* Pink/lilac glow on the lower-right */
+body::after {
+  content: "";
+  position: fixed;
+  pointer-events: none;
+  z-index: -1;
+  width: 700px;
+  height: 430px;
+  right: -180px;
+  bottom: -290px;
+  background: radial-gradient(
+    ellipse at center,
+    rgba(236,72,153,.34) 0%,
+    rgba(168,85,247,.23) 36%,
+    rgba(79,70,229,.14) 58%,
+    transparent 76%
+  );
+  filter: blur(38px);
+}
+
+/* Give the toolbar the clean white SaaS appearance from the reference */
+.app-toolbar {
+  background: rgba(255,255,255,.93);
+  box-shadow:
+    0 1px 0 rgba(255,255,255,.9),
+    0 8px 30px rgba(30,20,60,.035);
+}
+
+/* More premium purple logo */
+.brand-mark {
+  background: linear-gradient(145deg, #a06cff 0%, #7c3aed 42%, #4c1d95 100%);
+  box-shadow:
+    0 10px 25px rgba(109,40,217,.30),
+    0 0 28px rgba(139,92,246,.16),
+    inset 0 1px 0 rgba(255,255,255,.30);
+}
+
+/* More visible purple edge glow around the editor */
+.editor-frame {
+  background: rgba(255,255,255,.965);
+  box-shadow:
+    0 30px 85px rgba(67,45,125,.14),
+    0 8px 26px rgba(35,25,70,.07),
+    0 0 0 1px rgba(139,92,246,.035);
+}
+
+.editor-frame::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 2;
+  border-radius: inherit;
+  background:
+    linear-gradient(
+      135deg,
+      rgba(139,92,246,.14),
+      transparent 18%,
+      transparent 75%,
+      rgba(236,72,153,.075)
+    );
+}
+
+/* Softer, cleaner paper header */
+.paper-header {
+  background: linear-gradient(
+    180deg,
+    rgba(255,255,255,.99),
+    rgba(248,248,252,.92)
+  );
+}
+
+/* Make the editor feel more like a premium writing canvas */
+#note,
+#preview {
+  background: transparent;
+  caret-color: #7c3aed;
+}
+
+/* Stronger violet focus state */
+#note:focus {
+  box-shadow: inset 3px 0 0 rgba(124,58,237,.10);
+}
+
+/* Better floating formatting glass */
+.floating-tools {
+  background: rgba(255,255,255,.94);
+  border-color: rgba(109,40,217,.09);
+  box-shadow:
+    0 16px 42px rgba(48,34,92,.13),
+    0 0 0 1px rgba(139,92,246,.025);
+}
+
+/* Make the status pills participate in the purple palette */
+.timer-pill {
+  background: linear-gradient(135deg, #e9e8ff, #dedaff);
+  color: #5145a8;
+}
+
+.stats-pill {
+  background: linear-gradient(135deg, #f1e5ff, #ead8ff);
+  color: #774bb0;
+}
+
+/* Purple glow on primary history action */
+.save-version-btn {
+  background: linear-gradient(135deg, #5b21b6 0%, #7c3aed 42%, #a855f7 100%);
+  box-shadow:
+    0 14px 30px rgba(109,40,217,.27),
+    0 0 30px rgba(139,92,246,.12),
+    inset 0 1px 0 rgba(255,255,255,.22);
+}
+
+/* Smooth SaaS-like motion */
+.editor-frame,
+.floating-tools,
+.icon-btn,
+.mini-btn,
+.brand-btn,
+.pill {
+  transition:
+    transform .22s ease,
+    box-shadow .22s ease,
+    background .22s ease,
+    border-color .22s ease,
+    color .22s ease;
+}
+
+.editor-frame:hover {
+  box-shadow:
+    0 34px 92px rgba(67,45,125,.16),
+    0 10px 28px rgba(35,25,70,.07),
+    0 0 0 1px rgba(139,92,246,.045);
+}
+
+@media (max-width: 1000px) {
+  body {
+    background:
+      radial-gradient(ellipse 420px 280px at 5% 112%, rgba(67,56,202,.22), transparent 72%),
+      radial-gradient(ellipse 430px 280px at 100% 112%, rgba(236,72,153,.19), transparent 72%),
+      linear-gradient(180deg, #fafbfc 0%, #f4f2f9 58%, #e5dcf8 100%);
+  }
+
+  .editor-frame:hover {
+    box-shadow:
+      0 24px 60px rgba(67,45,125,.13),
+      0 7px 20px rgba(35,25,70,.06);
+  }
+}
