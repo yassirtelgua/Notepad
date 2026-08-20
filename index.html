@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="theme-color" content="#6d28d9" />
+  <meta name="theme-color" content="#2563eb" />
   <meta name="description" content="Notepad — a modern, private browser-based writing workspace." />
   <title>Notepad — Modern Writing Workspace</title>
   <link rel="stylesheet" href="style.css" />
@@ -22,7 +22,6 @@
           <span class="brand-title">Notepad</span>
           <span class="brand-subtitle">Your writing space</span>
         </span>
-        <svg class="icon small-icon brand-chevron" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9l6 6 6-6"></path></svg>
       </button>
       <div class="toolbar-divider"></div>
 
@@ -49,7 +48,10 @@
     <div class="workspace-hint"><span class="shortcut-key">Ctrl</span><span>+</span><span class="shortcut-key">S</span><span>to save a version</span></div>
   </div>
 
-  <div class="floating-tools" aria-label="Formatting tools">
+  <main class="editor-shell">
+    <section class="editor-frame">
+      <div class="paper-header"><span class="paper-label">NOTE</span><span class="paper-line"></span></div>
+      <div class="floating-tools" aria-label="Formatting tools">
     <button class="mini-btn" id="fontDownBtn" title="Smaller text">A−</button>
     <button class="mini-btn" id="fontUpBtn" title="Bigger text">A+</button>
     <span class="format-divider"></span>
@@ -57,20 +59,17 @@
     <button class="mini-btn" id="italicBtn" title="Italic"><em>I</em></button>
     <button class="mini-btn heading-tool" id="headingBtn" title="Heading">H</button>
   </div>
-
-  <main class="editor-shell">
-    <section class="editor-frame">
-      <div class="paper-header"><span class="paper-label">NOTE</span><span class="paper-line"></span></div>
       <div id="note" contenteditable="true" spellcheck="true" data-placeholder="Start writing something great..."></div>
       <div id="preview"></div>
-      <div class="editor-footer"><span>Private · stored in your browser</span><span>Ready to write</span></div>
+      <div class="editor-footer">
+        <span>Private · stored in your browser</span>
+        <div class="footer-status">
+          <span class="pill timer-pill" id="timer">00:00</span>
+          <span class="pill stats-pill" id="stats">0 characters, 0 words</span>
+        </div>
+      </div>
     </section>
   </main>
-
-  <footer class="bottom-status">
-    <span class="pill timer-pill" id="timer">00:00</span>
-    <span class="pill stats-pill" id="stats">0 characters, 0 words</span>
-  </footer>
 
   <div class="history-overlay" id="historyOverlay"></div>
   <aside class="history-panel" id="historyPanel">
