@@ -51,7 +51,7 @@ document.addEventListener("DOMContentLoaded", () => {
     preview.style.fontSize = fontSize + "px";
   }
 
-  applySystemTheme();
+  applySavedTheme();
   updateStats();
   updateTimerDisplay();
 
@@ -415,19 +415,71 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }
 
-  function applySystemTheme() {
-    const prefersLight = window.matchMedia("(prefers-color-scheme: light)").matches;
+  function updateThemeButton(isDark) {
+    if (!themeBtn) return;
 
-    if (prefersLight) {
-      document.body.classList.add("light");
+    themeBtn.title = isDark ? "Switch to light mode" : "Switch to dark mode";
+    themeBtn.setAttribute("aria-label", themeBtn.title);
+
+    const icon = themeBtn.querySelector(".theme-icon");
+    if (!icon) return;
+
+    if (isDark) {
+      icon.innerHTML = `
+        <path d="M21 12.8A8.5 8.5 0 1 1 11.2 3 7 7 0 0 0 21 12.8Z"></path>
+      `;
     } else {
-      document.body.classList.remove("light");
+      icon.innerHTML = `
+        <circle cx="12" cy="12" r="4"></circle>
+        <path d="M12 2v2"></path>
+        <path d="M12 20v2"></path>
+        <path d="m4.93 4.93 1.41 1.41"></path>
+        <path d="m17.66 17.66 1.41 1.41"></path>
+        <path d="M2 12h2"></path>
+        <path d="M20 12h2"></path>
+        <path d="m6.34 17.66-1.41 1.41"></path>
+        <path d="m19.07 4.93-1.41 1.41"></path>
+      `;
     }
   }
 
+  function applyTheme(theme) {
+    const isDark = theme === "dark";
+    document.body.classList.toggle("dark", isDark);
+    document.body.classList.toggle("light", !isDark);
+    localStorage.setItem("notepadTheme", isDark ? "dark" : "light");
+
+    const metaTheme = document.querySelector('meta[name="theme-color"]');
+    if (metaTheme) {
+      metaTheme.setAttribute("content", isDark ? "#15131d" : "#6d28d9");
+    }
+
+    updateThemeButton(isDark);
+  }
+
+  function applySavedTheme() {
+    const saved = localStorage.getItem("notepadTheme");
+
+    if (saved === "dark" || saved === "light") {
+      applyTheme(saved);
+      return;
+    }
+
+    const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+    applyTheme(prefersDark ? "dark" : "light");
+    localStorage.removeItem("notepadTheme");
+  }
+
+  function applySystemTheme() {
+    if (localStorage.getItem("notepadTheme")) return;
+    const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+    applyTheme(prefersDark ? "dark" : "light");
+  }
+
   function toggleTheme() {
-    document.body.classList.toggle("light");
-    showToast("Theme changed", "info");
+    const isDark = document.body.classList.contains("dark");
+    applyTheme(isDark ? "light" : "dark");
+    showToast(isDark ? "Light mode enabled" : "Dark mode enabled", "info");
   }
 
   function toggleFullscreen() {
