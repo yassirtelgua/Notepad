@@ -54,7 +54,7 @@ button:focus-visible{outline:3px solid rgba(37,99,235,.25);outline-offset:2px}
 #note:empty::before{content:attr(data-placeholder);color:#b8b8c2;pointer-events:none}
 #note h1,#preview h1{font-size:2em;line-height:1.2;margin:.4em 0 .7em;letter-spacing:-.045em}
 .editor-footer{position:absolute;bottom:0;left:0;right:0;height:38px;display:flex;justify-content:space-between;align-items:center;padding:0 28px;background:rgba(255,255,255,.93);border-top:1px solid var(--border);color:var(--muted-light);font-size:10px;font-weight:650}
-#preview{display:none}.read-mode #preview{max-width:900px;margin:0 auto;font-family:Georgia,"Times New Roman",serif;font-weight:500;line-height:1.85;letter-spacing:.1px}.read-mode .editor-frame{border-color:rgba(37,99,235,.13)}
+#preview{display:none}.read-mode .editor-frame{border-color:rgba(37,99,235,.13)}
 .focus-mode .app-toolbar,.focus-mode .workspace-bar,.focus-mode .floating-tools,.focus-mode .bottom-status,.focus-mode .editor-footer,.focus-mode .paper-header{display:none}
 .focus-mode .editor-shell{height:100vh;padding:0}.focus-mode .editor-frame{width:min(900px,100%);border:0;border-radius:0;box-shadow:none}.focus-mode #note,.focus-mode #preview{height:100%;padding-top:90px;padding-bottom:90px}
 .exit-focus-btn{display:none;position:fixed;top:22px;right:22px;z-index:300;border:1px solid var(--border);background:var(--surface);color:var(--text);padding:10px 15px;border-radius:999px;font-size:12px;font-weight:800;cursor:pointer;box-shadow:0 4px 18px rgba(35,28,58,.06)}
@@ -1031,6 +1031,51 @@ html body.read-mode #preview pre {
 }
 
 /* Preserve the same readable editor spacing on smaller screens. */
+@media (max-width: 1000px) {
+  html body.read-mode #preview {
+    font-size: 18px !important;
+    line-height: 1.7 !important;
+  }
+}
+
+@media (max-width: 650px) {
+  html body.read-mode #preview {
+    font-size: 17px !important;
+    line-height: 1.7 !important;
+  }
+}
+
+
+/* =========================================================
+   V10 — READ MODE USES THE EXACT EDITOR FONT
+   ========================================================= */
+
+html body.read-mode #preview {
+  font-family:
+    Inter,
+    ui-sans-serif,
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    Arial,
+    sans-serif !important;
+
+  font-size: 20px !important;
+  font-weight: 470 !important;
+  line-height: 1.85 !important;
+  letter-spacing: -.012em !important;
+
+  max-width: none !important;
+  margin: 0 !important;
+  color: var(--text) !important;
+}
+
+/* Do not let browser defaults introduce a different typeface. */
+html body.read-mode #preview,
+html body.read-mode #preview * {
+  font-family: inherit !important;
+}
+
 @media (max-width: 1000px) {
   html body.read-mode #preview {
     font-size: 18px !important;
