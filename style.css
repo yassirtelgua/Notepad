@@ -973,3 +973,18 @@ html body.dark .footer-status .stats-pill {
     padding: 4px 7px;
   }
 }
+
+
+/* V8 — Focus mode uses a target/spotlight icon to distinguish it
+   from browser fullscreen (corner-expansion icon). */
+.focus-icon {
+  stroke-width: 1.9;
+}
+
+.icon-btn#focusBtn:hover .focus-icon {
+  transform: scale(1.06);
+}
+
+.icon-btn#focusBtn.active .focus-icon {
+  stroke-width: 2.1;
+}
