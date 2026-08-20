@@ -272,3 +272,225 @@ body::after {
       0 7px 20px rgba(35,25,70,.06);
   }
 }
+
+/* =========================================================
+   DARK MODE — true theme, not just an icon toggle
+   ========================================================= */
+body.dark {
+  --bg-top: #0d0c12;
+  --bg-mid: #12101a;
+  --bg-bottom: #1d1630;
+  --surface: rgba(24,22,32,.94);
+  --surface-solid: #181620;
+  --surface-soft: rgba(32,29,43,.82);
+  --text: #f6f4fb;
+  --muted: #aaa6b7;
+  --muted-2: #777286;
+  --border: rgba(255,255,255,.09);
+  --purple-soft: rgba(139,92,246,.16);
+  --shadow-card: 0 30px 90px rgba(0,0,0,.38), 0 8px 28px rgba(0,0,0,.25);
+
+  background:
+    radial-gradient(ellipse 620px 400px at 8% 110%, rgba(67,56,202,.28), transparent 72%),
+    radial-gradient(ellipse 620px 400px at 94% 108%, rgba(236,72,153,.20), transparent 72%),
+    radial-gradient(ellipse 720px 480px at 50% 112%, rgba(124,58,237,.25), transparent 70%),
+    linear-gradient(180deg, #0c0b10 0%, #111019 45%, #181326 72%, #24183b 100%);
+}
+
+body.dark::before {
+  background: radial-gradient(
+    ellipse at center,
+    rgba(124,58,237,.42) 0%,
+    rgba(109,40,217,.25) 34%,
+    rgba(168,85,247,.13) 57%,
+    transparent 78%
+  );
+}
+
+body.dark::after {
+  background: radial-gradient(
+    ellipse at center,
+    rgba(236,72,153,.25) 0%,
+    rgba(168,85,247,.17) 38%,
+    transparent 76%
+  );
+}
+
+body.dark .app-toolbar {
+  background: rgba(17,15,23,.88);
+  border-bottom-color: rgba(255,255,255,.08);
+  box-shadow: 0 1px 0 rgba(255,255,255,.025), 0 8px 30px rgba(0,0,0,.15);
+}
+
+body.dark .brand-btn,
+body.dark .icon-btn,
+body.dark .about-btn {
+  color: #f5f2fb;
+}
+
+body.dark .brand-btn:hover,
+body.dark .icon-btn:hover,
+body.dark .about-btn:hover {
+  background: rgba(139,92,246,.12);
+  color: #c4b5fd;
+}
+
+body.dark .save-state {
+  color: #aaa6b7;
+}
+
+body.dark .workspace-bar {
+  color: #aaa6b7;
+}
+
+body.dark .workspace-label,
+body.dark .brand-subtitle {
+  color: #777286;
+}
+
+body.dark .workspace-name {
+  color: #f6f4fb;
+}
+
+body.dark .shortcut-key {
+  background: rgba(255,255,255,.045);
+  border-color: rgba(255,255,255,.09);
+  color: #aaa6b7;
+}
+
+body.dark .floating-tools {
+  background: rgba(28,25,38,.92);
+  border-color: rgba(255,255,255,.10);
+  box-shadow: 0 18px 45px rgba(0,0,0,.34), 0 0 0 1px rgba(139,92,246,.035);
+}
+
+body.dark .mini-btn {
+  color: #aaa6b7;
+}
+
+body.dark .mini-btn:hover {
+  background: rgba(139,92,246,.16);
+  color: #c4b5fd;
+}
+
+body.dark .editor-frame {
+  background: rgba(24,22,32,.96);
+  border-color: rgba(255,255,255,.085);
+  box-shadow: var(--shadow-card);
+}
+
+body.dark .editor-frame::before {
+  background: linear-gradient(
+    135deg,
+    rgba(139,92,246,.18),
+    transparent 22%,
+    transparent 70%,
+    rgba(236,72,153,.10)
+  );
+}
+
+body.dark .paper-header {
+  background: linear-gradient(180deg, rgba(31,28,40,.98), rgba(25,23,33,.96));
+  border-bottom-color: rgba(255,255,255,.075);
+}
+
+body.dark .paper-label {
+  color: #a78bfa;
+}
+
+body.dark .paper-line,
+body.dark .toolbar-divider,
+body.dark .format-divider {
+  background: rgba(255,255,255,.085);
+}
+
+body.dark #note,
+body.dark #preview {
+  color: #f5f2fb;
+  caret-color: #a78bfa;
+}
+
+body.dark #note:empty::before {
+  color: #666171;
+}
+
+body.dark #note::-webkit-scrollbar-thumb,
+body.dark #preview::-webkit-scrollbar-thumb,
+body.dark .history-panel::-webkit-scrollbar-thumb {
+  background: #4a4555;
+}
+
+body.dark .editor-footer {
+  background: rgba(22,20,29,.93);
+  border-top-color: rgba(255,255,255,.075);
+  color: #777286;
+}
+
+body.dark .timer-pill {
+  background: rgba(99,102,241,.18);
+  color: #a5b4fc;
+  border-color: rgba(129,140,248,.12);
+}
+
+body.dark .stats-pill {
+  background: rgba(168,85,247,.16);
+  color: #d8b4fe;
+  border-color: rgba(168,85,247,.12);
+}
+
+body.dark .history-overlay {
+  background: rgba(0,0,0,.58);
+}
+
+body.dark .history-panel {
+  background: rgba(25,23,33,.98);
+  border-color: rgba(255,255,255,.09);
+  box-shadow: -20px 20px 80px rgba(0,0,0,.48);
+}
+
+body.dark .history-header h2,
+body.dark .history-preview {
+  color: #f6f4fb;
+}
+
+body.dark .history-header p,
+body.dark .history-date {
+  color: #9994a6;
+}
+
+body.dark .history-close-btn {
+  background: rgba(255,255,255,.055);
+  color: #aaa6b7;
+}
+
+body.dark .history-close-btn:hover {
+  background: rgba(139,92,246,.16);
+  color: #c4b5fd;
+}
+
+body.dark .history-item,
+body.dark .history-empty {
+  background: rgba(255,255,255,.035);
+  border-color: rgba(255,255,255,.075);
+}
+
+body.dark .restore-version-btn {
+  background: rgba(44,175,103,.14);
+  color: #70e1a1;
+}
+
+body.dark .delete-version-btn {
+  background: rgba(229,72,77,.14);
+  color: #ff9b9f;
+}
+
+body.dark .exit-focus-btn {
+  background: #201d29;
+  color: #f6f4fb;
+  border-color: rgba(255,255,255,.10);
+}
+
+body.dark .exit-focus-btn:hover {
+  background: #7c3aed;
+  border-color: #7c3aed;
+}
