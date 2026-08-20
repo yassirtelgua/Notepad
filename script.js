@@ -451,7 +451,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const metaTheme = document.querySelector('meta[name="theme-color"]');
     if (metaTheme) {
-      metaTheme.setAttribute("content", isDark ? "#15131d" : "#6d28d9");
+      metaTheme.setAttribute("content", isDark ? "#080e17" : "#2563eb");
     }
 
     updateThemeButton(isDark);
