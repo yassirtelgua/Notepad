@@ -5,6 +5,12 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="theme-color" content="#2563eb" />
   <meta name="description" content="Notepad — a modern, private browser-based writing workspace." />
+  <meta name="robots" content="index, follow" />
+  <meta name="author" content="Notepad" />
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="Notepad — Modern Writing Workspace" />
+  <meta property="og:description" content="A clean browser-based workspace for writing, formatting, saving versions, and focused work." />
+  <link rel="icon" href="favicon.svg" type="image/svg+xml" />
   <title>Notepad — Modern Writing Workspace</title>
   <link rel="stylesheet" href="style.css" />
   <script src="script.js" defer></script>
@@ -39,7 +45,7 @@
       <button class="icon-btn" id="previewBtn" title="Read mode" aria-label="Read mode"><svg class="icon" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="16" rx="2.5"></rect><path d="M9 4v16"></path><path d="M13 8h5"></path><path d="M13 12h5"></path><path d="M13 16h3"></path></svg></button>
       <button class="icon-btn" id="focusBtn" title="Focus mode — distraction-free" aria-label="Focus mode — distraction-free"><svg class="icon focus-icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="7"></circle><circle cx="12" cy="12" r="2"></circle><path d="M12 2v3"></path><path d="M12 19v3"></path><path d="M2 12h3"></path><path d="M19 12h3"></path></svg></button>
       <button class="icon-btn" id="fullscreenBtn" title="Fullscreen" aria-label="Fullscreen"><svg class="icon" viewBox="0 0 24 24"><path d="M8 3H3v5"></path><path d="M16 3h5v5"></path><path d="M8 21H3v-5"></path><path d="M16 21h5v-5"></path></svg></button>
-      <button class="about-btn" id="aboutBtn">About</button>
+      <a class="about-btn" id="aboutBtn" href="about.html">About</a>
     </div>
   </header>
 
@@ -62,7 +68,16 @@
       <div id="note" contenteditable="true" spellcheck="true" data-placeholder="Start writing something great..."></div>
       <div id="preview"></div>
       <div class="editor-footer">
-        <span>Private · stored in your browser</span>
+        <div class="footer-left">
+          <span>Private · stored in your browser</span>
+          <nav class="app-links" aria-label="Site information">
+            <a href="how-to-use.html">How to use</a>
+            <a href="guides.html">Guides</a>
+            <a href="privacy.html">Privacy</a>
+            <a href="terms.html">Terms</a>
+            <a href="contact.html">Contact</a>
+          </nav>
+        </div>
         <div class="footer-status">
           <span class="pill timer-pill" id="timer">00:00</span>
           <span class="pill stats-pill" id="stats">0 characters, 0 words</span>
