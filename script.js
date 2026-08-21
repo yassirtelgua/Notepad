@@ -541,7 +541,10 @@ function toggleReadMode() {
   safeClick(previewBtn, toggleReadMode);
   safeClick(focusBtn, toggleFocusMode);
   safeClick(fullscreenBtn, toggleFullscreen);
-  safeClick(aboutBtn, showAbout);
+  // About is a real navigation link now; do not replace it with a toast.
+  if (aboutBtn && aboutBtn.tagName !== "A") {
+    safeClick(aboutBtn, showAbout);
+  }
   safeClick(exitFocusBtn, toggleFocusMode);
 
   safeClick(fontDownBtn, () => {
