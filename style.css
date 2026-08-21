@@ -1089,3 +1089,50 @@ html body.read-mode #preview * {
     line-height: 1.7 !important;
   }
 }
+
+
+/* =========================================================
+   ADSENSE PREPARATION — PUBLIC SITE NAVIGATION
+   ========================================================= */
+.footer-left {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  min-width: 0;
+}
+
+.app-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.app-links a {
+  color: var(--muted-2);
+  text-decoration: none;
+  font-size: 10px;
+  font-weight: 700;
+}
+
+.app-links a:hover {
+  color: #2563eb;
+}
+
+.about-btn {
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+@media (max-width: 760px) {
+  .footer-left {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 7px;
+  }
+
+  .app-links {
+    gap: 6px;
+  }
+}
