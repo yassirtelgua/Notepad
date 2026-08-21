@@ -54,14 +54,16 @@ a { color: inherit; }
 .site-logo {
   width: 38px;
   height: 38px;
-  border-radius: 12px;
-  display: grid;
-  place-items: center;
-  color: white;
-  font-size: 20px;
-  font-weight: 900;
-  background: linear-gradient(145deg, #60a5fa, #2563eb 55%, #173b87);
-  box-shadow: 0 9px 22px rgba(37,99,235,.24);
+  border-radius: 11px;
+  position: relative;
+  overflow: hidden;
+  background: linear-gradient(145deg, #3b82f6, #1d4ed8);
+  box-shadow: 0 8px 18px rgba(37,99,235,.24);
+  flex: 0 0 auto;
+  display: block;
+  color: transparent;
+  font-size: 0;
+  font-weight: normal;
 }
 
 .site-brand small {
@@ -285,4 +287,37 @@ h3 {
   .section {
     padding: 22px;
   }
+}
+
+
+/* Exact Notepad app logo — shared by the public pages */
+.site-logo-line {
+  position: absolute;
+  display: block;
+  height: 5px;
+  border-radius: 999px;
+  background: #fff;
+  transform: rotate(-42deg);
+}
+
+.site-logo-line-one {
+  width: 21px;
+  top: 11px;
+  left: 9px;
+}
+
+.site-logo-line-two {
+  width: 17px;
+  top: 22px;
+  left: 13px;
+}
+
+.site-logo-dot {
+  position: absolute;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #fff;
+  right: 7px;
+  top: 8px;
 }
