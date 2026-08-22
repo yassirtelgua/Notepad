@@ -1,5 +1,5 @@
 document.addEventListener("DOMContentLoaded", () => {
-  console.log("Notepad script loaded ✅");
+  console.log("TelNoto script loaded ✅");
 
   const note = document.getElementById("note");
   const preview = document.getElementById("preview");
@@ -523,7 +523,7 @@ function toggleReadMode() {
   }
 
   function showAbout() {
-    showToast("Notepad Pro — rich-text notepad with autosave and version history.", "info");
+    showToast("TelNoto — a modern writing workspace with autosave and version history.", "info");
   }
 
   function safeClick(element, callback) {
