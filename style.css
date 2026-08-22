@@ -23,6 +23,7 @@ button:focus-visible{outline:3px solid rgba(37,99,235,.25);outline-offset:2px}
 .icon,.small-icon{fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}.icon{width:20px;height:20px}.small-icon{width:15px;height:15px}
 .brand-btn,.icon-btn,.about-btn{border:0;background:transparent;color:var(--text);cursor:pointer;border-radius:12px;transition:.18s}
 .brand-btn{min-height:48px;display:flex;align-items:center;gap:11px;padding:5px 8px 5px 2px}
+.brand-logo-image{width:150px;height:auto;max-height:52px;object-fit:contain;display:block}
 .brand-btn:hover,.icon-btn:hover,.about-btn:hover{background:rgba(37,99,235,.07)}
 .brand-btn:active,.icon-btn:active,.about-btn:active{transform:scale(.96)}
 .brand-mark{width:38px;height:38px;border-radius:11px;position:relative;overflow:hidden;background:linear-gradient(145deg,#3b82f6,#1d4ed8);box-shadow:0 8px 18px rgba(37,99,235,.24);flex:0 0 auto}
@@ -81,7 +82,7 @@ button:focus-visible{outline:3px solid rgba(37,99,235,.25);outline-offset:2px}
   .bottom-status{right:12px;left:12px;justify-content:center;bottom:12px}.pill{font-size:10px;padding:8px 11px}
 }
 @media(max-width:650px){
-  .toolbar-left,.toolbar-right{flex-wrap:wrap}.app-toolbar{justify-content:center}.brand-btn{margin-right:2px}
+  .toolbar-left,.toolbar-right{flex-wrap:wrap}.app-toolbar{justify-content:center}.brand-btn{margin-right:2px}.brand-logo-image{width:135px}
   .workspace-bar{height:40px}.workspace-name{font-size:12px}.icon-btn{width:36px;height:36px}.icon{width:18px;height:18px}
   .editor-shell{height:calc(100vh - 112px)}#note,#preview{font-size:17px;line-height:1.7}
   .history-panel{width:calc(100% - 20px);max-width:none;height:calc(100vh - 20px);top:10px;right:-110%}.history-panel.show{right:10px}
