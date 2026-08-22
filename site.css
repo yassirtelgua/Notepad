@@ -51,21 +51,6 @@ a { color: inherit; }
   font-weight: 800;
 }
 
-.site-logo {
-  width: 38px;
-  height: 38px;
-  border-radius: 11px;
-  position: relative;
-  overflow: hidden;
-  background: linear-gradient(145deg, #3b82f6, #1d4ed8);
-  box-shadow: 0 8px 18px rgba(37,99,235,.24);
-  flex: 0 0 auto;
-  display: block;
-  color: transparent;
-  font-size: 0;
-  font-weight: normal;
-}
-
 .site-brand small {
   display: block;
   margin-top: 3px;
@@ -321,3 +306,5 @@ h3 {
   right: 7px;
   top: 8px;
 }
+
+.site-logo-image{width:150px;height:auto;max-height:52px;object-fit:contain;display:block;flex:0 0 auto}
